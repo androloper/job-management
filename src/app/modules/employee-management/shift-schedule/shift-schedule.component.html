@@ -1,0 +1,974 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Projects</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Weekend Project</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Overview</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Schedule Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn m-r-5" data-bs-toggle="modal" data-bs-target="#add_schedule">Assign Shifts</a>
+            <div class="view-icons">
+                <a routerLink="/employee-management/shift-schedule" class="grid-view btn btn-link active"><i class="fa fa-calendar"></i></a>
+                <a routerLink="/employee-management/shift-schedule/shift-list" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+
+            <!-- Search Filter -->
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating" style="width: 100%; height: 100%">
+                            <option>All Department</option>
+                            <option value="1">Finance</option>
+                            <option value="2">Finance and Management</option>
+                            <option value="3">Hr & Finance</option>
+                            <option value="4">ITech</option>
+                        </select>
+                        <label class="focus-label">Department</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="form-group form-focus focused">
+                        <input class="form-control floating" type="date">
+                        <label class="focus-label">From</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="form-group form-focus focused">
+                        <input class="form-control floating" type="date">
+                        <label class="focus-label">From</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
+            </div>
+            <!-- Search Filter -->
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table custom-table datatable bg-gray-50">
+                            <thead>
+                            <tr>
+                                <th>Scheduled Shift</th>
+                                <th>Fri 21</th>
+                                <th>Sat 22</th>
+                                <th>Sun 23</th>
+                                <th>Mon 24</th>
+                                <th>Tue 25</th>
+                                <th>Wed 26</th>
+                                <th>Thu 27</th>
+                                <th>Fri 28</th>
+                                <th>Sat 29</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-02.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">John Doe <span>Web Designer</span></a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-09.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Richard Miles <span>Web Developer</span></a>
+                                    </h2>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-10.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">John Smith <span>Android Developer</span></a>
+                                    </h2>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-05.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Mike Litorus <span>IOS Developer</span></a>
+                                    </h2>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-11.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Wilmer Deluna <span>Team Leader</span></a>
+                                    </h2>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-12.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Jeffrey Warden <span>Web Developer</span></a>
+                                    </h2>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h2 class="table-avatar">
+                                        <a routerLink="/employee-management/all-employees/employee-profile" class="avatar"><img alt="" src="assets/images/avatars/female-13.jpg"></a>
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Bernardo Galaviz <span>Web Developer</span></a>
+                                    </h2>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <h2>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit_schedule" style="border:2px dashed #1eb53a">
+                                                <span class="username-info m-b-10">6:30 am - 9:30 pm ( 14 hrs 15 mins)</span>
+                                                <span class="userrole-info">Web Designer - SMARTHR</span>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-add-shedule-list">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#add_schedule">
+                                            <span><i class="fa fa-plus"></i></span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Schedule Modal -->
+        <div id="add_schedule" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Schedule</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Department <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Department</option>
+                                            <option value="1">Finance</option>
+                                            <option value="2">Finance and Management</option>
+                                            <option value="3">Hr & Finance</option>
+                                            <option value="4">ITech</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Employee Name <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Employee </option>
+                                            <option value="1">Richard Miles </option>
+                                            <option value="2">John Smith</option>
+                                            <option value="3">Mike Litorus </option>
+                                            <option value="4">Wilmer Deluna</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Date</label>
+                                        <input class="form-control" type="date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Shifts <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Shift</option>
+                                            <option value="1">10'o clock Shift</option>
+                                            <option value="2">10:30 shift</option>
+                                            <option value="3">Daily Shift </option>
+                                            <option value="4">New Shift</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min End Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End Time   <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max End Time <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Break Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Accept Extra Hours </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">
+                                            <label class="custom-control-label" for="customSwitch1"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Publish </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch2" checked="">
+                                            <label class="custom-control-label" for="customSwitch2"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Schedule Modal -->
+
+        <!-- Edit Schedule Modal -->
+        <div id="edit_schedule" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Schedule</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Department <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Development</option>
+                                            <option value="1">Finance</option>
+                                            <option value="2">Finance and Management</option>
+                                            <option value="3">Hr & Finance</option>
+                                            <option value="4">ITech</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Employee Name <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Employee</option>
+                                            <option value="1">Richard Miles </option>
+                                            <option value="2">John Smith</option>
+                                            <option value="3">Mike Litorus </option>
+                                            <option value="4">Wilmer Deluna</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Date</label>
+                                        <input class="form-control" type="date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Shifts <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Shift</option>
+                                            <option value="1">10'o clock Shift</option>
+                                            <option value="2">10:30 shift</option>
+                                            <option value="3">Daily Shift </option>
+                                            <option value="4">New Shift</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min End Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End Time   <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max End Time <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Break Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Repeat Every</label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">1 week</option>
+                                            <option value="1">2 weeks</option>
+                                            <option value="2">3 weeks</option>
+                                            <option value="3">4 weeks</option>
+                                            <option value="4">5 weeks</option>
+                                            <option value="5">6 weeks</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End On <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="custom-control custom-checkbox">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Recurring Shift </label>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck" checked="">
+                                                <label class="custom-control-label" for="customCheck"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Accept Extra Hours </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch3" checked="">
+                                            <label class="custom-control-label" for="customSwitch3"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Publish </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch4" checked="">
+                                            <label class="custom-control-label" for="customSwitch4"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Schedule Modal -->
+    </div>
+
+</div>

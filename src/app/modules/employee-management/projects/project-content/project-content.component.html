@@ -1,0 +1,551 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/dashboard" >Employee Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Projects</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Project Content Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_project"><i class="fa fa-plus"></i> Create Project</a>
+            <div class="view-icons">
+                <a routerLink="/employee-management/projects/project-content" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+                <a routerLink="/employee-management/projects/project-list" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Project Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating" style="width: 100%; height: 100%">
+                            <option>Select Roll</option>
+                            <option>Web Developer</option>
+                            <option>Web Designer</option>
+                            <option>Android Developer</option>
+                            <option>Ios Developer</option>
+                        </select>
+                        <label class="focus-label">Role</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
+            </div>
+            <!-- /Search Filter -->
+            <br>
+            <!--Datatable-->
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3" *ngFor="let project of projects
+                | paginate: { itemsPerPage: page.size,
+                                   currentPage: page.pageNumber,
+                                   totalItems: page.totalElements}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mat-icon-button card-body">
+                                <button mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item>
+                                        <mat-icon>edit</mat-icon>
+                                        <span href="#" data-bs-toggle="modal" data-bs-target="#edit_project" (click)="setProject(this.project['id'])" >Edit</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <mat-icon>delete</mat-icon>
+                                        <span href="#" data-bs-toggle="modal" data-bs-target="#delete_project" (click)="tempId=this.project['id']">Delete</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <h4 class="project-title"><a routerLink="/employee-management/projects/project-view/{{project.id}}">{{project.title}}</a></h4>
+                            <small class="block text-ellipsis m-b-15">
+                                <span class="text-xs">1</span> <span class="text-muted">open tasks,</span>
+                                <span class="text-xs">9</span> <span class="text-muted">tasks completed</span>
+                            </small>
+                            <p class="text-muted">{{project.description}}
+                            </p>
+                            <div class="pro-deadline m-b-15">
+                                <div class="sub-title">
+                                    Deadline:
+                                </div>
+                                <div class="text-muted">
+                                    {{project.endDate |date: 'medium'}}
+                                </div>
+                            </div>
+                            <div class="project-members m-b-15">
+                                <div>Project Leader :</div>
+                                <ul class="team-members">
+                                    <li>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#team_info" (click)="projectId=this.project['id']" title="{{project.leaders}}"><img alt="" src="assets/images/avatars/female-16.jpg"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="project-members m-b-15">
+                                <div>Team :</div>
+                                <ul class="team-members">
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" title="John Doe"><img alt="" src="assets/images/avatars/female-02.jpg"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" title="Richard Miles"><img alt="" src="assets/images/avatars/female-09.jpg"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" title="John Smith"><img alt="" src="assets/images/avatars/female-10.jpg"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="tooltip" title="Mike Litorus"><img alt="" src="assets/images/avatars/female-05.jpg"></a>
+                                    </li>
+                                    <li class="dropdown avatar-dropdown">
+                                        <a href="#" class="all-users dropdown-toggle" data-toggle="dropdown" aria-expanded="false">+15</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <div class="avatar-group">
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-02.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-09.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-10.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-05.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-11.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-12.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-13.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-01.jpg">
+                                                </a>
+                                                <a class="avatar avatar-xs" href="#">
+                                                    <img alt="" src="assets/images/avatars/female-16.jpg">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
+                            <div class="progress progress-xs mb-0">
+                                <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="40%" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Datatable-->
+            <br>
+            <pagination-controls
+                class="text-center"
+                (pageChange)="page.pageNumber = $event; test($event)"></pagination-controls>
+        </div>
+
+        <div id="add_project" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Project</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addProject()" [formGroup]="addProjectForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="AddId" formControlName="AddId">
+                                        <label class="col-form-label">Project Title
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addProjectForm.get('Title').invalid && addProjectForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="addProjectForm.get('Title').invalid && addProjectForm.get('Title').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('Title').invalid && addProjectForm.get('Title').touched"
+                                                class="text-danger"> *Project Title is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addProjectForm.get('Description').invalid && addProjectForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="addProjectForm.get('Description').invalid && addProjectForm.get('Description').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('Description').invalid && addProjectForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Priority <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addProjectForm.get('Priority').invalid && addProjectForm.get('Priority').touched"
+                                                formControlName="Priority">
+                                            <option [ngValue]="1">High</option>
+                                            <option [ngValue]="2">Medium</option>
+                                            <option [ngValue]="3">Low</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addProjectForm.get('Priority').invalid && addProjectForm.get('Priority').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('Priority').invalid && addProjectForm.get('Priority').touched"
+                                                class="text-danger"> *Priority is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Created By
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addProjectForm.get('CreateBy').invalid && addProjectForm.get('CreateBy').touched"
+                                               formControlName="CreateBy">
+                                        <div
+                                            *ngIf="addProjectForm.get('CreateBy').invalid && addProjectForm.get('CreateBy').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('CreateBy').invalid && addProjectForm.get('CreateBy').touched"
+                                                class="text-danger"> *Created By is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Start Date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addProjectForm.get('StartDate').invalid && addProjectForm.get('StartDate').touched"
+                                               formControlName="StartDate">
+                                        <div
+                                            *ngIf="addProjectForm.get('StartDate').invalid && addProjectForm.get('StartDate').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('StartDate').invalid && addProjectForm.get('StartDate').touched"
+                                                class="text-danger"> *Start Date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End Date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addProjectForm.get('EndDate').invalid && addProjectForm.get('EndDate').touched"
+                                               formControlName="EndDate">
+                                        <div
+                                            *ngIf="addProjectForm.get('EndDate').invalid && addProjectForm.get('EndDate').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('EndDate').invalid && addProjectForm.get('EndDate').touched"
+                                                class="text-danger"> *End Date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is Active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addProjectForm.get('IsActive').invalid && addProjectForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="1">Active</option>
+                                            <option [ngValue]="0">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addProjectForm.get('IsActive').invalid && addProjectForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="addProjectForm.get('IsActive').invalid && addProjectForm.get('IsActive').touched"
+                                                class="text-danger"> *Is Active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Project Modal -->
+
+        <div id="edit_project" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Project</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editProject()" [formGroup]="editProjectForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="EditId" formControlName="EditId">
+                                        <label class="col-form-label">Project Title
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editProjectForm.get('Title').invalid && editProjectForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="editProjectForm.get('Title').invalid && editProjectForm.get('Title').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('Title').invalid && editProjectForm.get('Title').touched"
+                                                class="text-danger"> *Project Title is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editProjectForm.get('Description').invalid && editProjectForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="editProjectForm.get('Description').invalid && editProjectForm.get('Description').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('Description').invalid && editProjectForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Priority <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editProjectForm.get('Priority').invalid && editProjectForm.get('Priority').touched"
+                                                formControlName="Priority">
+                                            <option [ngValue]="1">High</option>
+                                            <option [ngValue]="2">Medium</option>
+                                            <option [ngValue]="3">Low</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editProjectForm.get('Priority').invalid && editProjectForm.get('Priority').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('Priority').invalid && editProjectForm.get('Priority').touched"
+                                                class="text-danger"> *Priority is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Updated By
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editProjectForm.get('UpdateBy').invalid && editProjectForm.get('UpdateBy').touched"
+                                               formControlName="UpdateBy">
+                                        <div
+                                            *ngIf="editProjectForm.get('UpdateBy').invalid && editProjectForm.get('UpdateBy').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('UpdateBy').invalid && editProjectForm.get('UpdateBy').touched"
+                                                class="text-danger"> *Updated By is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Start Date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editProjectForm.get('StartDate').invalid && editProjectForm.get('StartDate').touched"
+                                               formControlName="StartDate">
+                                        <div
+                                            *ngIf="editProjectForm.get('StartDate').invalid && editProjectForm.get('StartDate').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('StartDate').invalid && editProjectForm.get('StartDate').touched"
+                                                class="text-danger"> *Start Date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End Date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editProjectForm.get('EndDate').invalid && editProjectForm.get('EndDate').touched"
+                                               formControlName="EndDate">
+                                        <div
+                                            *ngIf="editProjectForm.get('EndDate').invalid && editProjectForm.get('EndDate').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('EndDate').invalid && editProjectForm.get('EndDate').touched"
+                                                class="text-danger"> *End Date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is Active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editProjectForm.get('IsActive').invalid && editProjectForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="1">Active</option>
+                                            <option [ngValue]="0">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editProjectForm.get('IsActive').invalid && editProjectForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="editProjectForm.get('IsActive').invalid && editProjectForm.get('IsActive').touched"
+                                                class="text-danger"> *Is Active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Project Modal -->
+
+        <div id="delete_project" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Project</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn" data-bs-dismiss="modal" (click)="deleteProject()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Project Modal -->
+
+        <div id="team_info" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Team Information</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row staff-grid-row">
+                                <div class="profile-widget center">
+                                    <div class="profile-img">
+                                        <a routerLink="/employee-management/all-employees/employee-profile"
+                                           class="avatar"><img
+                                            src="assets/images/avatars/female-13.jpg" alt=""></a>
+                                    </div>
+                                    <h4 class="user-name m-t-10 mb-0 text-ellipsis">
+                                        <a routerLink="/employee-management/all-employees/employee-profile">Team Leader</a>
+                                    </h4>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-12 col-lg-3 col-xl-4" *ngFor="let team of projects">
+                                    <div class="profile-widget">
+                                        <div class="profile-img">
+                                            <a routerLink="/employee-management/all-employees/employee-profile"
+                                               class="avatar"><img
+                                                src="assets/images/avatars/female-01.jpg" alt=""></a>
+                                        </div>
+                                        <h4 class="user-name m-t-10 mb-0 text-ellipsis">
+                                            <a routerLink="/employee-management/all-employees/employee-profile">Team Member</a>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Team Info Modal -->
+    </div>
+</div>

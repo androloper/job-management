@@ -1,0 +1,383 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/vehicle-management/dashboard">Vehicle Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Services</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/vehicle-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    All Services Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_service"><i class="fa fa-plus"></i> Add Service</a>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="rounded-2xl">
+            <br>
+            <ngx-datatable id="ngx-dt51"
+                           class="material single-selection whitespace-nowrap"
+                           [rows]="services"
+                           [loadingIndicator]="loadingIndicator"
+                           [columnMode]="ColumnMode.force"
+                           [headerHeight]="50"
+                           [footerHeight]="50"
+                           rowHeight="60"
+                           [externalPaging]="true"
+                           [count]="page.totalElements"
+                           [offset]="page.pageNumber"
+                           [limit]="page.size"
+                           (page)="setPage($event)">
+                <ngx-datatable-column name="Description">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Vehicle">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Service Company">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Service Type">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{column.name}}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Id">
+                    <ng-template ngx-datatable-header-template><span class="text-right no-sort">Actions</span></ng-template>
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+
+                        <span class="text-right align-text-top m-l-60">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-top: 0">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_service"
+                                          (click)="setService(row.id)">Edit</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_service"
+                                          (click)="tempId = row.id">Delete</span>
+                                </button>
+                            </mat-menu>
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+            <!--Datatable-->
+        </div>
+
+        <div id="add_service" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Service</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addService()" [formGroup]="addServiceForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="hidden" id="Id" formControlName="Id">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('Description').invalid && addServiceForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="addServiceForm.get('Description').invalid && addServiceForm.get('Description').touched">
+                                            <small
+                                                *ngIf="addServiceForm.get('Description').invalid && addServiceForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Created Date</label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addServiceForm.get('CreatedDate').invalid && addServiceForm.get('CreatedDate').touched"
+                                               formControlName="CreatedDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Vehicle Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('VehicleId').invalid && addServiceForm.get('VehicleId').touched"
+                                               formControlName="VehicleId">
+                                        <div
+                                            *ngIf="addServiceForm.get('VehicleId').invalid && addServiceForm.get('VehicleId').touched">
+                                            <small
+                                                *ngIf="addServiceForm.get('VehicleId').invalid && addServiceForm.get('VehicleId').touched"
+                                                class="text-danger"> *Vehicle Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Vehicle</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('Vehicle').invalid && addServiceForm.get('Vehicle').touched"
+                                               formControlName="Vehicle">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Company Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('ServiceCompanyId').invalid && addServiceForm.get('ServiceCompanyId').touched"
+                                               formControlName="ServiceCompanyId">
+                                        <div
+                                            *ngIf="addServiceForm.get('ServiceCompanyId').invalid && addServiceForm.get('ServiceCompanyId').touched">
+                                            <small
+                                                *ngIf="addServiceForm.get('ServiceCompanyId').invalid && addServiceForm.get('ServiceCompanyId').touched"
+                                                class="text-danger"> *Service Company Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Company</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('ServiceCompany').invalid && addServiceForm.get('ServiceCompany').touched"
+                                               formControlName="ServiceCompany">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Type Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('ServiceTypeId').invalid && addServiceForm.get('ServiceTypeId').touched"
+                                               formControlName="ServiceTypeId">
+                                        <div
+                                            *ngIf="addServiceForm.get('ServiceTypeId').invalid && addServiceForm.get('ServiceTypeId').touched">
+                                            <small
+                                                *ngIf="addServiceForm.get('ServiceTypeId').invalid && addServiceForm.get('ServiceTypeId').touched"
+                                                class="text-danger"> *Service Type Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Type</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addServiceForm.get('ServiceType').invalid && addServiceForm.get('ServiceType').touched"
+                                               formControlName="ServiceType">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Vehicle Modal -->
+
+        <div id="edit_service" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Service</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editService()" [formGroup]="editServiceForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="hidden" id="EditId" formControlName="EditId">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('Description').invalid && editServiceForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="editServiceForm.get('Description').invalid && editServiceForm.get('Description').touched">
+                                            <small
+                                                *ngIf="editServiceForm.get('Description').invalid && editServiceForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Created Date</label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editServiceForm.get('CreatedDate').invalid && editServiceForm.get('CreatedDate').touched"
+                                               formControlName="CreatedDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Vehicle Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('VehicleId').invalid && editServiceForm.get('VehicleId').touched"
+                                               formControlName="VehicleId">
+                                        <div
+                                            *ngIf="editServiceForm.get('VehicleId').invalid && editServiceForm.get('VehicleId').touched">
+                                            <small
+                                                *ngIf="editServiceForm.get('VehicleId').invalid && editServiceForm.get('VehicleId').touched"
+                                                class="text-danger"> *Vehicle Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Vehicle</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('Vehicle').invalid && editServiceForm.get('Vehicle').touched"
+                                               formControlName="Vehicle">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Company Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('ServiceCompanyId').invalid && editServiceForm.get('ServiceCompanyId').touched"
+                                               formControlName="ServiceCompanyId">
+                                        <div
+                                            *ngIf="editServiceForm.get('ServiceCompanyId').invalid && editServiceForm.get('ServiceCompanyId').touched">
+                                            <small
+                                                *ngIf="editServiceForm.get('ServiceCompanyId').invalid && editServiceForm.get('ServiceCompanyId').touched"
+                                                class="text-danger"> *Service Company Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Company</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('ServiceCompany').invalid && editServiceForm.get('ServiceCompany').touched"
+                                               formControlName="ServiceCompany">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Type Id
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('ServiceTypeId').invalid && editServiceForm.get('ServiceTypeId').touched"
+                                               formControlName="ServiceTypeId">
+                                        <div
+                                            *ngIf="editServiceForm.get('ServiceTypeId').invalid && editServiceForm.get('ServiceTypeId').touched">
+                                            <small
+                                                *ngIf="editServiceForm.get('ServiceTypeId').invalid && editServiceForm.get('ServiceTypeId').touched"
+                                                class="text-danger"> *Service Type Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Service Type</label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editServiceForm.get('ServiceType').invalid && editServiceForm.get('ServiceType').touched"
+                                               formControlName="ServiceType">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Vehicle Modal -->
+
+        <div id="delete_service" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Service</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn" data-bs-dismiss="modal" (click)="deleteService()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Vehicle Modal -->
+    </div>
+</div>

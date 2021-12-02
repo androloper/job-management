@@ -1,0 +1,72 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <mat-drawer-container class="flex-auto">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-72 dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #matDrawer>
+            <fuse-vertical-navigation
+                [appearance]="'classic'"
+                [navigation]="menuData"
+                [inner]="true"
+                [mode]="'side'"
+                [name]="'sidebar-navigation'"
+                [opened]="true"></fuse-vertical-navigation>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Main -->
+            <div class="flex-auto p-6 sm:p-10">
+                <div class="flex-1 min-w-0 row">
+                    <!-- Drawer toggle -->
+                    <button
+                        class="mb-4"
+                        mat-icon-button
+                        (click)="matDrawer.toggle()">
+                        <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+                    </button>
+                    <!-- Breadcrumbs -->
+                    <div class="col-sm-9" style="padding-top: 7px">
+                        <div class="hidden sm:flex flex-wrap items-center font-medium">
+                            <div>
+                                <a class="whitespace-nowrap text-primary-500"
+                                   routerLink="/vehicle-management/dashboard">Vehicle Management</a>
+                            </div>
+                            <div class="flex ml-1 items-center whitespace-nowrap">
+                                <mat-icon
+                                    class="icon-size-5 text-secondary"
+                                    [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                <span class="ml-1 text-secondary">Violation Reports</span>
+                            </div>
+                        </div>
+                        <div class="flex sm:hidden">
+                            <a
+                                class="inline-flex -ml-1.5 text-secondary font-medium"
+                                [routerLink]="'/vehicle-management/dashboard'">
+                                <mat-icon
+                                    class="icon-size-5 text-secondary"
+                                    [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                                <span class="ml-1">Back to Dashboard</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENT GOES HERE -->
+                <div class="rounded-2xl">
+                    <router-outlet></router-outlet>
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

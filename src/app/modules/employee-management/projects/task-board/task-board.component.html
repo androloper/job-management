@@ -1,0 +1,1071 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/dashboard" >Employee Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/projects/project-list" >Projects</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Taskboard</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Task-board Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_task_board"><i class="fa fa-plus"></i> Add Taskboard</a>
+            <div class="view-icons">
+                <a routerLink="/employee-management/projects/project-view/{{this.tasksList[0]['projectId']}}" class="btn btn-link"><i class="fa fa-link"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+
+            <div class="row board-view-header">
+                <div class="col-4">
+                    <div class="pro-teams">
+                        <div class="pro-team-lead">
+                            <h4>Lead</h4>
+                            <div class="avatar-group">
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-11.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-01.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-16.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <a href="" class="avatar-title rounded-circle border border-white" data-bs-toggle="modal" data-bs-target="#assign_leader"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-team-members">
+                            <h4>Team</h4>
+                            <div class="avatar-group">
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-02.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-09.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <img class="avatar-img rounded-circle border border-white" alt="User Image" src="assets/images/avatars/female-12.jpg">
+                                </div>
+                                <div class="avatar">
+                                    <a href="" class="avatar-title rounded-circle border border-white" data-bs-toggle="modal" data-bs-target="#assign_user"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="pro-progress">
+                        <div class="pro-progress-bar">
+                            <h4>Progress</h4>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>
+                            </div>
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kanban-board card mb-0">
+                <div class="card-body">
+                    <div class="kanban-cont">
+                        <div class="kanban-list kanban-warning">
+                            <div class="kanban-header">
+                                <span class="status-title">Backlog</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #BacklogList="cdkDropList" [cdkDropListData]="backlogItems"
+                                 [cdkDropListConnectedTo]="[SelectedForDevelopmentList, InProgressList, TestList, DoneList, CancelledList]" (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let task of backlogItems" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                            <span class="status-title">{{task.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.task['id']); tempId=42;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=task['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 5%"
+                                                         aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>5%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{task.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{task.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-09.jpg" class="task-avatar" style="width:24px; height:24px">
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=42">Add New Task</a>
+                            </div>
+                        </div>
+
+                        <div class="kanban-list kanban-info">
+                            <div class="kanban-header">
+                                <span class="status-title">Selected For Development</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #SelectedForDevelopmentList="cdkDropList" [cdkDropListData]="lstSelectedForDevelopment"
+                                 [cdkDropListConnectedTo]="[BacklogList, InProgressList, TestList, DoneList, CancelledList]" (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let item of lstSelectedForDevelopment" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                            <span class="status-title">{{item.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.item['id']); tempId=43;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=item['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 20%"
+                                                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>20%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{item.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{item.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-05.jpg" class="task-avatar" style="width:24px; height:24px">
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=43">Add New Task</a>
+                            </div>
+                        </div>
+
+                        <div class="kanban-list kanban-purple">
+                            <div class="kanban-header">
+                                <span class="status-title">In Progress</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #InProgressList="cdkDropList" [cdkDropListData]="lstInProgress"
+                                 [cdkDropListConnectedTo]="[BacklogList, SelectedForDevelopmentList, TestList, DoneList, CancelledList]" (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let data of lstInProgress" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                            <span class="status-title">{{data.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.data['id']); tempId=44;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=data['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 40%"
+                                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>40%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{data.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{data.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-06.jpg" class="task-avatar" style="width:24px; height:24px">
+                                            <span class="task-user-count">+2</span>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=44">Add New Task</a>
+                            </div>
+                        </div>
+
+                        <div class="kanban-list kanban-primary">
+                            <div class="kanban-header">
+                                <span class="status-title">Test</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #TestList="cdkDropList" [cdkDropListData]="lstTest"
+                                 [cdkDropListConnectedTo]="[BacklogList, SelectedForDevelopmentList, InProgressList, DoneList, CancelledList]"
+                                 (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let itm of lstTest" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                            <span class="status-title">{{itm.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.itm['id']); tempId=45;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=itm['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 70%"
+                                                         aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>70%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{itm.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{itm.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-09.jpg" class="task-avatar" style="width:24px; height:24px">
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=45">Add New Task</a>
+                            </div>
+                        </div>
+
+                        <div class="kanban-list kanban-success">
+                            <div class="kanban-header">
+                                <span class="status-title">Done</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #DoneList="cdkDropList" [cdkDropListData]="lstDone"
+                                 [cdkDropListConnectedTo]="[BacklogList, SelectedForDevelopmentList, InProgressList, TestList, CancelledList]" (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let completed of lstDone" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                    <span class="status-title">{{completed.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.completed['id']); tempId=46;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=completed['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 100%"
+                                                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>100%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{completed.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{completed.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-07.jpg" class="task-avatar" style="width:24px; height:24px">
+                                            <span class="task-user-count">+2</span>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=46">Add New Task</a>
+                            </div>
+                        </div>
+
+                        <div class="kanban-list kanban-danger">
+                            <div class="kanban-header">
+                                <span class="status-title">Cancelled</span>
+                                <div class="dropdown kanban-action">
+                                    <a href="" data-bs-toggle="dropdown">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task_board">Edit</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task_board">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kanban-wrap" cdkDropList #CancelledList="cdkDropList" [cdkDropListData]="lstCancelled"
+                                 [cdkDropListConnectedTo]="[BacklogList, SelectedForDevelopmentList, InProgressList, TestList, DoneList]"
+                                 (cdkDropListDropped)="onDrop($event)">
+                                <div class="card panel" *ngFor="let review of lstCancelled" cdkDrag>
+                                    <div class="kanban-box">
+                                        <div class="task-board-header">
+                                            <span class="status-title">{{review.title}}</span>
+                                            <div class="dropdown kanban-task-action">
+                                                <a href="" data-bs-toggle="dropdown">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_task" (click)="setTask(this.review['id']); tempId=67;">Edit</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete_task" (click)="tempId=review['id']">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="task-board-body">
+                                            <div class="kanban-info">
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar" role="progressbar" style="width: 0%"
+                                                         aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span>0%</span>
+                                            </div>
+                                            <div class="kanban-footer">
+                                        <span class="task-info-cont">
+                                            <span class="task-date"><i class="fa fa-clock-o" style="margin-right: 4px"></i>{{review.dueDate | date: 'medium'}}</span>
+                                            <span
+                                                class="task-priority badge bg-inverse-danger">{{review.priority}}</span>
+                                        </span>
+                                                <span class="task-users">
+                                            <img src="assets/images/avatars/female-04.jpg" class="task-avatar" style="width:24px; height:24px">
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-new-task">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#add_task" (click)="tempId=67">Add New Task</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add_task_board" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Task Board</h4>
+                        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Task Board Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group task-board-color">
+                                <label>Task Board Color</label>
+                                <div class="board-color-list">
+                                    <label class="board-control board-primary">
+                                        <input name="radio" type="radio" class="board-control-input" value="primary" checked="">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-success">
+                                        <input name="radio" type="radio" class="board-control-input" value="success">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-info">
+                                        <input name="radio" type="radio" class="board-control-input" value="info">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-purple">
+                                        <input name="radio" type="radio" class="board-control-input" value="purple">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-warning">
+                                        <input name="radio" type="radio" class="board-control-input" value="warning">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-danger">
+                                        <input name="radio" type="radio" class="board-control-input" value="danger">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button class="btn btn-primary btn-lg" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Task Board Modal-->
+
+        <div id="edit_task_board" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Task Board</h4>
+                        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Task Board Name</label>
+                                <input type="text" class="form-control" value="Backlog">
+                            </div>
+                            <div class="form-group task-board-color">
+                                <label>Task Board Color</label>
+                                <div class="board-color-list">
+                                    <label class="board-control board-primary">
+                                        <input name="radio" type="radio" class="board-control-input" value="primary" checked="">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-success">
+                                        <input name="radio" type="radio" class="board-control-input" value="success">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-info">
+                                        <input name="radio" type="radio" class="board-control-input" value="info">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-purple">
+                                        <input name="radio" type="radio" class="board-control-input" value="purple">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-warning">
+                                        <input name="radio" type="radio" class="board-control-input" value="warning">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                    <label class="board-control board-danger">
+                                        <input name="radio" type="radio" class="board-control-input" value="danger">
+                                        <span class="board-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button class="btn btn-primary btn-lg" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Task Board Modal-->
+
+        <div id="delete_task_board" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Task Board</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn" data-bs-dismiss="modal">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Task Board Modal-->
+
+        <div id="assign_leader" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign Leader to this project</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group m-b-30">
+                            <input placeholder="Search to add a leader" class="form-control search-input" type="text">
+                            <span class="input-group-append">
+									<button class="btn btn-primary">Search</button>
+								</span>
+                        </div>
+                        <div>
+                            <ul class="chat-user-list">
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar"><img alt="" src="assets/images/avatars/female-09.jpg"></span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">Richard Miles</div>
+                                                <span class="designation">Web Developer</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar"><img alt="" src="assets/images/avatars/female-10.jpg"></span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">John Smith</div>
+                                                <span class="designation">Android Developer</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+												<span class="avatar">
+													<img alt="" src="assets/images/avatars/female-16.jpg">
+												</span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">Jeffery Lalor</div>
+                                                <span class="designation">Team Leader</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Assign Leader Modal -->
+
+        <div id="assign_user" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign the user to this project</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group m-b-30">
+                            <input placeholder="Search a user to assign" class="form-control search-input" type="text">
+                            <span class="input-group-append">
+									<button class="btn btn-primary">Search</button>
+								</span>
+                        </div>
+                        <div>
+                            <ul class="chat-user-list">
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar"><img alt="" src="assets/images/avatars/female-09.jpg"></span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">Richard Miles</div>
+                                                <span class="designation">Web Developer</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+                                            <span class="avatar"><img alt="" src="assets/images/avatars/female-10.jpg"></span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">John Smith</div>
+                                                <span class="designation">Android Developer</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="media">
+												<span class="avatar">
+													<img alt="" src="assets/images/avatars/female-16.jpg">
+												</span>
+                                            <div class="media-body align-self-center text-nowrap">
+                                                <div class="user-name">Jeffery Lalor</div>
+                                                <span class="designation">Team Leader</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Assign User Modal -->
+
+        <div id="add_task" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Task</h4>
+                        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addTask()" [formGroup]="addTaskForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="AddTaskId" formControlName="AddTaskId">
+                                        <input type="hidden" id="AddTaskProjectId" formControlName="AddTaskProjectId">
+                                        <input type="hidden" id="AddTaskStatusId" formControlName="AddTaskStatusId">
+                                        <label class="col-form-label">Task name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addTaskForm.get('Title').invalid && addTaskForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="addTaskForm.get('Title').invalid && addTaskForm.get('Title').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('Title').invalid && addTaskForm.get('Title').touched"
+                                                class="text-danger"> *Task name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addTaskForm.get('Description').invalid && addTaskForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="addTaskForm.get('Description').invalid && addTaskForm.get('Description').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('Description').invalid && addTaskForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Priority <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addTaskForm.get('Priority').invalid && addTaskForm.get('Priority').touched"
+                                                formControlName="Priority">
+                                            <option [ngValue]="1">Highest</option>
+                                            <option [ngValue]="2">High</option>
+                                            <option [ngValue]="3">Medium</option>
+                                            <option [ngValue]="4">Low</option>
+                                            <option [ngValue]="5">Lowest</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addTaskForm.get('Priority').invalid && addTaskForm.get('Priority').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('Priority').invalid && addTaskForm.get('Priority').touched"
+                                                class="text-danger"> *Priority is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Approved by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addTaskForm.get('ApprovedBy').invalid && addTaskForm.get('ApprovedBy').touched"
+                                               formControlName="ApprovedBy">
+                                        <div
+                                            *ngIf="addTaskForm.get('ApprovedBy').invalid && addTaskForm.get('ApprovedBy').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('ApprovedBy').invalid && addTaskForm.get('ApprovedBy').touched"
+                                                class="text-danger"> *Approved by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Due date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addTaskForm.get('DueDate').invalid && addTaskForm.get('DueDate').touched"
+                                               formControlName="DueDate">
+                                        <div
+                                            *ngIf="addTaskForm.get('DueDate').invalid && addTaskForm.get('DueDate').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('DueDate').invalid && addTaskForm.get('DueDate').touched"
+                                                class="text-danger"> *Due date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Status <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addTaskForm.get('Status').invalid && addTaskForm.get('Status').touched"
+                                                formControlName="Status">
+                                            <option [ngValue]="0">0</option>
+                                            <option [ngValue]="1">1</option>
+                                            <option [ngValue]="2">2</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addTaskForm.get('Status').invalid && addTaskForm.get('Status').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('Status').invalid && addTaskForm.get('Status').touched"
+                                                class="text-danger"> *Status is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Created by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addTaskForm.get('CreateBy').invalid && addTaskForm.get('CreateBy').touched"
+                                               formControlName="CreateBy">
+                                        <div
+                                            *ngIf="addTaskForm.get('CreateBy').invalid && addTaskForm.get('CreateBy').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('CreateBy').invalid && addTaskForm.get('CreateBy').touched"
+                                                class="text-danger"> *Created by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is Active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addTaskForm.get('IsActive').invalid && addTaskForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true">Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addTaskForm.get('IsActive').invalid && addTaskForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="addTaskForm.get('IsActive').invalid && addTaskForm.get('IsActive').touched"
+                                                class="text-danger"> *Is Active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section text-center">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Task Modal -->
+
+        <div id="edit_task" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Task</h4>
+                        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editTask()" [formGroup]="editTaskForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="EditTaskId" formControlName="EditTaskId">
+                                        <input type="hidden" id="EditTaskProjectId" formControlName="EditTaskProjectId">
+                                        <input type="hidden" id="EditTaskStatusId" formControlName="EditTaskStatusId">
+                                        <label class="col-form-label">Task name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editTaskForm.get('Title').invalid && editTaskForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="editTaskForm.get('Title').invalid && editTaskForm.get('Title').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('Title').invalid && editTaskForm.get('Title').touched"
+                                                class="text-danger"> *Task name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editTaskForm.get('Description').invalid && editTaskForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="editTaskForm.get('Description').invalid && editTaskForm.get('Description').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('Description').invalid && editTaskForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Priority <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editTaskForm.get('Priority').invalid && editTaskForm.get('Priority').touched"
+                                                formControlName="Priority">
+                                            <option [ngValue]="1">Highest</option>
+                                            <option [ngValue]="2">High</option>
+                                            <option [ngValue]="3">Medium</option>
+                                            <option [ngValue]="4">Low</option>
+                                            <option [ngValue]="5">Lowest</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editTaskForm.get('Priority').invalid && editTaskForm.get('Priority').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('Priority').invalid && editTaskForm.get('Priority').touched"
+                                                class="text-danger"> *Priority is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Approved by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editTaskForm.get('ApprovedBy').invalid && editTaskForm.get('ApprovedBy').touched"
+                                               formControlName="ApprovedBy">
+                                        <div
+                                            *ngIf="editTaskForm.get('ApprovedBy').invalid && editTaskForm.get('ApprovedBy').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('ApprovedBy').invalid && editTaskForm.get('ApprovedBy').touched"
+                                                class="text-danger"> *Approved by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Due date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editTaskForm.get('DueDate').invalid && editTaskForm.get('DueDate').touched"
+                                               formControlName="DueDate">
+                                        <div
+                                            *ngIf="editTaskForm.get('DueDate').invalid && editTaskForm.get('DueDate').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('DueDate').invalid && editTaskForm.get('DueDate').touched"
+                                                class="text-danger"> *Due date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Status <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editTaskForm.get('Status').invalid && editTaskForm.get('Status').touched"
+                                                formControlName="Status">
+                                            <option [ngValue]="0">0</option>
+                                            <option [ngValue]="1">1</option>
+                                            <option [ngValue]="2">2</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editTaskForm.get('Status').invalid && editTaskForm.get('Status').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('Status').invalid && editTaskForm.get('Status').touched"
+                                                class="text-danger"> *Status is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Updated by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editTaskForm.get('UpdateBy').invalid && editTaskForm.get('UpdateBy').touched"
+                                               formControlName="UpdateBy">
+                                        <div
+                                            *ngIf="editTaskForm.get('UpdateBy').invalid && editTaskForm.get('UpdateBy').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('UpdateBy').invalid && editTaskForm.get('UpdateBy').touched"
+                                                class="text-danger"> *Updated by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is Active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editTaskForm.get('IsActive').invalid && editTaskForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true">Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editTaskForm.get('IsActive').invalid && editTaskForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="editTaskForm.get('IsActive').invalid && editTaskForm.get('IsActive').touched"
+                                                class="text-danger"> *Is Active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section text-center">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Task Modal -->
+
+        <div id="delete_task" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Task</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn" data-bs-dismiss="modal"
+                                    (click)="deleteTask()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Task Modal-->
+    </div>
+</div>

@@ -1,0 +1,998 @@
+<div class="absolute inset-0 flex flex-col overflow-y-auto" *transloco="let t"
+     cdkScrollable>
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="card col-sm-12">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    <a><img alt="" [src]=""></a>
+                                </div>
+                            </div>
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="profile-info-left">
+                                            <div class="staff-id">Make : {{this.vehiclesInfo['make']}}</div>
+                                            <div class="staff-id">Model : {{this.vehiclesInfo['model']}}</div>
+                                            <div class="staff-id">Plate : {{this.vehiclesInfo['plate']}}</div>
+                                            <div class="staff-id">Serial Number : {{this.vehiclesInfo['serialNumber']}}</div>
+                                            <br>
+                                            <div class="staff-id"><a class="btn btn-custom" (click)="liveTracking()">Live Tracking</a></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <div class="title">Color</div>
+                                                <div class="text"><a>{{this.vehiclesInfo['color']}}</a></div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Km</div>
+                                                <div class="text"><a>{{this.vehiclesInfo['km']}}</a></div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Driver Name</div>
+                                                <div class="text">{{this.vehiclesInfo['driverName']}}</div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Group Id</div>
+                                                <div class="text">{{this.vehiclesInfo['groupId']}}</div>
+                                            </li>
+                                            <li>
+                                                <div class="title">User Id</div>
+                                                <div class="text">{{this.vehiclesInfo['userId']}}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                            <div class="pro-edit"><a data-bs-target="#profile_info" data-bs-toggle="modal" class="edit-icon" href="#" (click)="setProfile(this.vehiclesInfo['id'])"><i class="fa fa-pencil"></i></a></div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <!-- CONTENT GOES HERE -->
+        <div class="rounded-2xl">
+            <div class="card col-sm-12 bg-transparent" style="padding:10px">
+                <div class="card tab-box">
+                    <div class="row user-tabs">
+                        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                            <ul class="nav nav-tabs nav-tabs-bottom" id="tabs">
+                                <li class="nav-item"><a href="#groups" data-bs-toggle="tab" class="nav-link active"
+                                                        (click)="getGroupVehiclesByGroupId({offset:0}); getGroupVehiclesByGroupId({offset:0});  getGroupVehiclesByGroupId({offset:0});">Groups</a></li>
+                                <li class="nav-item"><a href="#rules" data-bs-toggle="tab" class="nav-link"
+                                                        (click)="getRulesByVehicleId({offset:0}); getRulesByVehicleId({offset:0}); getRulesByVehicleId({offset:0});">Rules</a></li>
+                                <li class="nav-item"><a href="#reports" data-bs-toggle="tab" class="nav-link">Reports</a></li>
+                                <li class="nav-item"><a href="#accidents" data-bs-toggle="tab" class="nav-link"
+                                                        (click)="getAccidentsByVehicleId({offset:0}); getAccidentsByVehicleId({offset:0}); getAccidentsByVehicleId({offset:0});">Accidents</a></li>
+                                <li class="nav-item"><a href="#services" data-bs-toggle="tab" class="nav-link"
+                                                        (click)="getServicesByVehicleId({offset:0}); getServicesByVehicleId({offset:0}); getServicesByVehicleId({offset:0});">Services</a></li>
+                                <li class="nav-item"><a href="#live-tracking" data-bs-toggle="tab" class="nav-link"
+                                                        (click)="liveTracking();">Live Tracking</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="groups" class="pro-overview tab-pane fade show active">
+                        <br>
+                        <div class="rounded-2xl">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="stats-info">
+                                        <h6>City of the Group</h6>
+                                        <h4>{{this.groupInfo['name']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stats-info">
+                                        <h6>Country of the Group</h6>
+                                        <h4>{{this.groupInfo['description']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stats-info">
+                                        <h6>Number of Vehicles</h6>
+                                        <h4>{{this.groupVehicles.length}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <ngx-datatable id="ngx-dt1"
+                                class="material single-selection whitespace-nowrap"
+                                style="width: 100% !important;"
+                                [rows]="groupVehicles"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="ColumnMode.force"
+                                [headerHeight]="50"
+                                [footerHeight]="50"
+                                rowHeight="60"
+                                [externalPaging]="true"
+                                [count]="page.totalElements"
+                                [offset]="page.pageNumber"
+                                [limit]="page.size"
+                                (page)="getGroupVehiclesByGroupId($event)">
+                                <ngx-datatable-column name="Id">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Plate">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Make">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Model">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Color">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Km">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Serial Number">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Driver Name">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                            <!--Datatable-->
+                        </div>
+                    </div>
+                    <!-- /Groups Tab -->
+
+                    <div id="rules" class="tab-pane fade">
+                        <div class="rounded-2xl">
+                            <div class="col-auto float-right ml-auto">
+                                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_rule"><i class="fa fa-plus"></i> Add Rule</a>
+                            </div>
+                            <br>
+                            <br>
+                            <ngx-datatable id="ngx-dt2"
+                                class="material single-selection whitespace-nowrap"
+                                style="width: 100% !important;"
+                                [rows]="rulesInfo"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="ColumnMode.force"
+                                [headerHeight]="50"
+                                [footerHeight]="50"
+                                rowHeight="60"
+                                [externalPaging]="true"
+                                [count]="page.totalElements"
+                                [offset]="page.pageNumber"
+                                [limit]="page.size"
+                                (page)="getRulesByVehicleId($event)">
+                                <ngx-datatable-column name="Name">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Value">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Id">
+                                    <ng-template ngx-datatable-header-template><span
+                                        class="text-right no-sort">Actions</span></ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="text-right align-text-top m-l-60">
+                                            <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-top: 0">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                <button mat-menu-item>
+                                                    <mat-icon>edit</mat-icon>
+                                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_rule"
+                                                          (click)="setRule(row.id)">Edit</span>
+                                                </button>
+                                                <button mat-menu-item>
+                                                    <mat-icon>delete</mat-icon>
+                                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_rule"
+                                                          (click)="tempId = row.id">Delete</span>
+                                                </button>
+                                            </mat-menu>
+                                        </span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                        </div>
+                    </div>
+                    <!-- /Rules Tab -->
+
+                    <div id="reports" class="tab-pane fade">
+                        <mat-drawer-container class="flex-auto">
+                            <!-- Drawer -->
+                            <mat-drawer
+                                class="w-72 dark:bg-gray-900"
+                                [autoFocus]="false"
+                                [mode]="drawerMode"
+                                [opened]="drawerOpened"
+                                #matDrawer>
+                                <fuse-vertical-navigation
+                                    [appearance]="'classic'"
+                                    [navigation]="menuData"
+                                    [inner]="true"
+                                    [mode]="'side'"
+                                    (click)="this.ctr=this.ctr+1"
+                                    [name]="'sidebar-navigation'"
+                                    [opened]="true"></fuse-vertical-navigation>
+                            </mat-drawer>
+                            <!-- Drawer content -->
+                            <mat-drawer-content class="flex flex-col" style="margin-left: 288px">
+                                <!-- Main -->
+                                <div class="flex-auto p-6 sm:p-10">
+                                    <!-- CONTENT GOES HERE -->
+                                    <div class="rounded-2xl min-h-200" [hidden]="this.ctr<2">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                    <div class="rounded-2xl min-h-200" [hidden]="this.ctr>1">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <fuse-card
+                                                    class="flex flex-col w-full filter-article filter-interactive"
+                                                    [flippable]="true"
+                                                    [face]="'front'"
+                                                    #flippableCard01="fuseCard">
+                                                    <ng-container fuseCardFront>
+                                                        <img
+                                                            class="object-cover"
+                                                            src="assets/images/reports/1.jpg"
+                                                            alt="Card cover image">
+                                                        <div class="m-8 mb-4">
+                                                            <div class="text-2xl font-semibold leading-tight">Activity
+                                                                Reports
+                                                            </div>
+                                                            <div class="mt-3 -mx-3">
+                                                                <button
+                                                                    class="px-3"
+                                                                    mat-button
+                                                                    [color]="'primary'"
+                                                                    (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                                                                    Go To Activity Reports List
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container fuseCardBack>
+                                                        <div class="flex flex-col flex-auto m-4">
+                                                            <button
+                                                                class="ml-1.5"
+                                                                mat-icon-button
+                                                                (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                                                                <mat-icon
+                                                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                                            </button>
+                                                            <div class="m-4 mt-3">
+                                                                <div class="text-2xl font-semibold leading-tight">
+                                                                    Activity Reports
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/adr">Activity
+                                                                    Detail Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/ehdr">Engine
+                                                                    Hours Detail Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/iocr">Ignition
+                                                                    Open/Close Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/tr">Travel
+                                                                    Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/wr">Wait
+                                                                    Reports</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </fuse-card>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <fuse-card
+                                                    class="flex flex-col w-full filter-article filter-interactive"
+                                                    style="margin-left: 6px;"
+                                                    [flippable]="true"
+                                                    [face]="'front'"
+                                                    #flippableCard02="fuseCard">
+                                                    <ng-container fuseCardFront>
+                                                        <img
+                                                            class="object-cover"
+                                                            src="assets/images/reports/1.jpg"
+                                                            alt="Card cover image">
+                                                        <div class="m-8 mb-4">
+                                                            <div class="text-2xl font-semibold leading-tight">Violation
+                                                                Reports
+                                                            </div>
+                                                            <div class="mt-3 -mx-3">
+                                                                <button
+                                                                    class="px-3"
+                                                                    mat-button
+                                                                    [color]="'primary'"
+                                                                    (click)="flippableCard02.face = flippableCard02.face === 'front' ? 'back' : 'front'">
+                                                                    Go To Violation Reports List
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container fuseCardBack>
+                                                        <div class="flex flex-col flex-auto m-4">
+                                                            <button
+                                                                class="ml-1.5"
+                                                                mat-icon-button
+                                                                (click)="flippableCard02.face = flippableCard02.face === 'front' ? 'back' : 'front'">
+                                                                <mat-icon
+                                                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                                            </button>
+                                                            <div class="m-4 mt-3">
+                                                                <div class="text-2xl font-semibold leading-tight">
+                                                                    Violation Reports
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/avr">Activity
+                                                                    Violation Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/slvr">Speed
+                                                                    Limit Violation Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/sbr">Sudden
+                                                                    Brake Reports</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </fuse-card>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <fuse-card
+                                                    class="flex flex-col w-full filter-article filter-interactive"
+                                                    [flippable]="true"
+                                                    [face]="'front'"
+                                                    #flippableCard03="fuseCard">
+                                                    <ng-container fuseCardFront>
+                                                        <img
+                                                            class="object-cover"
+                                                            src="assets/images/reports/1.jpg"
+                                                            alt="Card cover image">
+                                                        <div class="m-8 mb-4">
+                                                            <div class="text-2xl font-semibold leading-tight">Region
+                                                                Reports
+                                                            </div>
+                                                            <div class="mt-3 -mx-3">
+                                                                <button
+                                                                    class="px-3"
+                                                                    mat-button
+                                                                    [color]="'primary'"
+                                                                    (click)="flippableCard03.face = flippableCard03.face === 'front' ? 'back' : 'front'">
+                                                                    Go To Region Reports List
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container fuseCardBack>
+                                                        <div class="flex flex-col flex-auto m-4">
+                                                            <button
+                                                                class="ml-1.5"
+                                                                mat-icon-button
+                                                                (click)="flippableCard03.face = flippableCard03.face === 'front' ? 'back' : 'front'">
+                                                                <mat-icon
+                                                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                                            </button>
+                                                            <div class="m-4 mt-3">
+                                                                <div class="text-2xl font-semibold leading-tight">
+                                                                    Region Reports
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/irar">Intra
+                                                                    Regional Activity Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/rar">Region
+                                                                    Activity Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/rasr">Region
+                                                                    Activity Summary Reports</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </fuse-card>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <fuse-card
+                                                    class="flex flex-col w-full filter-article filter-interactive"
+                                                    style="margin-left: 6px;"
+                                                    [flippable]="true"
+                                                    [face]="'front'"
+                                                    #flippableCard04="fuseCard">
+                                                    <ng-container fuseCardFront>
+                                                        <img
+                                                            class="object-cover"
+                                                            src="assets/images/reports/1.jpg"
+                                                            alt="Card cover image">
+                                                        <div class="m-8 mb-4">
+                                                            <div class="text-2xl font-semibold leading-tight">Sensor
+                                                                Reports
+                                                            </div>
+                                                            <div class="mt-3 -mx-3">
+                                                                <button
+                                                                    class="px-3"
+                                                                    mat-button
+                                                                    [color]="'primary'"
+                                                                    (click)="flippableCard04.face = flippableCard04.face === 'front' ? 'back' : 'front'">
+                                                                    Go To Sensor Reports List
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container fuseCardBack>
+                                                        <div class="flex flex-col flex-auto m-4">
+                                                            <button
+                                                                class="ml-1.5"
+                                                                mat-icon-button
+                                                                (click)="flippableCard04.face = flippableCard04.face === 'front' ? 'back' : 'front'">
+                                                                <mat-icon
+                                                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                                            </button>
+                                                            <div class="m-4 mt-3">
+                                                                <div class="text-2xl font-semibold leading-tight">
+                                                                    Sensor Reports
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/asdr">Acceleration
+                                                                    Sensor Detail Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/assr">Acceleration
+                                                                    Sensor Summary Reports</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </fuse-card>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <fuse-card
+                                                    class="flex flex-col w-full filter-article filter-interactive"
+                                                    [flippable]="true"
+                                                    [face]="'front'"
+                                                    #flippableCard05="fuseCard">
+                                                    <ng-container fuseCardFront>
+                                                        <img
+                                                            class="object-cover"
+                                                            src="assets/images/reports/2.jpg"
+                                                            alt="Card cover image">
+                                                        <div class="m-8 mb-4">
+                                                            <div class="text-2xl font-semibold leading-tight">Summary
+                                                                Reports
+                                                            </div>
+                                                            <div class="mt-3 -mx-3">
+                                                                <button
+                                                                    class="px-3"
+                                                                    mat-button
+                                                                    [color]="'primary'"
+                                                                    (click)="flippableCard05.face = flippableCard05.face === 'front' ? 'back' : 'front'">
+                                                                    Go To Summary Reports List
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container fuseCardBack>
+                                                        <div class="flex flex-col flex-auto m-4">
+                                                            <button
+                                                                class="ml-1.5"
+                                                                mat-icon-button
+                                                                (click)="flippableCard05.face = flippableCard05.face === 'front' ? 'back' : 'front'">
+                                                                <mat-icon
+                                                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                                            </button>
+                                                            <div class="m-4 mt-3">
+                                                                <div class="text-2xl font-semibold leading-tight">
+                                                                    Summary Reports
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/tmr">Total
+                                                                    Mileage Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/hbmr">Hour-based
+                                                                    Mileage Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/wdbmr">Weekly
+                                                                    Day-based Mileage Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/dbasr">Day-based
+                                                                    Activity Summary Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/esr">Engine
+                                                                    Summary Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/vbasr">Vehicle-based
+                                                                    Activity Summary Reports</a>
+                                                                </div>
+                                                                <div class="mt-4">
+                                                                    <span style="margin-right: 2px">♦</span><a
+                                                                    routerLink="/vehicle-management/vehicles/vehicle-profile/{{this.vehicleId}}/vsr">Violation
+                                                                    Summary Reports</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </fuse-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-drawer-content>
+                        </mat-drawer-container>
+                    </div>
+                    <!-- /Reports Tab -->
+
+                    <div id="accidents" class="tab-pane fade">
+                        <div class="rounded-2xl">
+                            <br>
+                            <ngx-datatable id="ngx-dt3"
+                                class="material single-selection whitespace-nowrap"
+                                style="width: 100% !important;"
+                                [rows]="accidentsInfo"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="ColumnMode.force"
+                                [headerHeight]="50"
+                                [footerHeight]="50"
+                                rowHeight="60"
+                                [externalPaging]="true"
+                                [count]="page.totalElements"
+                                [offset]="page.pageNumber"
+                                [limit]="page.size"
+                                (page)="getAccidentsByVehicleId($event)">
+                                <ngx-datatable-column name="Name">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Value">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                        </div>
+                    </div>
+                    <!-- /Accidents Tab -->
+
+                    <div id="services" class="tab-pane fade">
+                        <div class="rounded-2xl">
+                            <br>
+                            <ngx-datatable id="ng-dt4"
+                                class="material single-selection whitespace-nowrap"
+                                style="width: 100% !important;"
+                                [rows]="servicesInfo"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="ColumnMode.force"
+                                [headerHeight]="50"
+                                [footerHeight]="50"
+                                rowHeight="60"
+                                [externalPaging]="true"
+                                [count]="page.totalElements"
+                                [offset]="page.pageNumber"
+                                [limit]="page.size"
+                                (page)="getServicesByVehicleId($event)">
+                                <ngx-datatable-column name="Name">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Value">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                        </div>
+                    </div>
+                    <!-- /Services Tab -->
+
+                    <div id="live-tracking" class="tab-pane fade">
+                        <div class="rounded-2xl">
+                            <agm-map id="AgmMap" [latitude]="lat"
+                                     [longitude]="lng"
+                                     [zoom]="18" [usePanning]="true"
+                            [mapTypeId]="'hybrid'">
+<!--                                <div id="legend" class="dashboard"></div>-->
+                                <agm-marker [latitude]="lat"
+                                            [longitude]="lng"
+                                            [iconUrl]="symbolMove">
+                                    <agm-info-window>
+                                        <div>
+                                            <h3>Speed {{speed}}</h3>
+                                            <h4>Coordinates: {{lat}} {{ew}} - {{lng}} {{ns}}</h4>
+                                        </div>
+                                    </agm-info-window>
+                                </agm-marker>
+                                <agm-map-type-control></agm-map-type-control>
+                                <core-map-content (onMapLoad)="loadAPIWrapper($event)">
+                                </core-map-content>
+                            </agm-map>
+                            <div id="legend" class="dashboard">
+                                <div class="meter meter--rpm meter--big-label" hidden></div>
+                                <div class="meter meter--gear" hidden><div>1</div></div>
+                                <div class="meter meter--speed meter--big-label">
+                                    <div class="label label-unit"><span>Speed</span>
+                                        <div>Km/h</div>
+                                    </div>
+                                    <div class="grad grad--0" style="left: 30%; top: 84.641%;"></div>
+                                    <div class="grad-tick grad-tick--0"
+                                         style="left: 25%; top: 93.3013%; transform: translate3d(-50%, 0px, 0px) rotate(210deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--0"
+                                         style="left: 15.496%; top: 86.1867%; transform: translate3d(-50%, 0px, 0px) rotate(223.636deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--0"
+                                         style="left: 11.444%; top: 81.8345%; transform: translate3d(-50%, 0px, 0px) rotate(230.455deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--0"
+                                         style="left: 20.0361%; top: 90.0271%; transform: translate3d(-50%, 0px, 0px) rotate(216.818deg);"></div>
+                                    <div class="grad grad--1" style="left: 16.3499%; top: 71.6256%;">20</div>
+                                    <div class="grad-tick grad-tick--1"
+                                         style="left: 7.93732%; top: 77.032%; transform: translate3d(-50%, 0px, 0px) rotate(237.273deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--1"
+                                         style="left: 2.74996%; top: 66.3534%; transform: translate3d(-50%, 0px, 0px) rotate(250.909deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--1"
+                                         style="left: 1.14266%; top: 60.6283%; transform: translate3d(-50%, 0px, 0px) rotate(257.727deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--1"
+                                         style="left: 5.02558%; top: 71.8472%; transform: translate3d(-50%, 0px, 0px) rotate(244.091deg);"></div>
+                                    <div class="grad grad--2" style="left: 10.1811%; top: 53.8022%;">40</div>
+                                    <div class="grad-tick grad-tick--2"
+                                         style="left: 0.226404%; top: 54.7528%; transform: translate3d(-50%, 0px, 0px) rotate(264.545deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--2"
+                                         style="left: 0.508928%; top: 42.8843%; transform: translate3d(-50%, 0px, 0px) rotate(278.182deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--2"
+                                         style="left: 1.70371%; top: 37.059%; transform: translate3d(-50%, 0px, 0px) rotate(285deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--2"
+                                         style="left: 0.0141603%; top: 48.8101%; transform: translate3d(-50%, 0px, 0px) rotate(271.364deg);"></div>
+                                    <div class="grad grad--3" style="left: 12.8653%; top: 35.1335%;">60</div>
+                                    <div class="grad-tick grad-tick--3"
+                                         style="left: 3.5816%; top: 31.4169%; transform: translate3d(-50%, 0px, 0px) rotate(291.818deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--3"
+                                         style="left: 9.2712%; top: 20.9972%; transform: translate3d(-50%, 0px, 0px) rotate(305.455deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--3"
+                                         style="left: 13.0024%; top: 16.367%; transform: translate3d(-50%, 0px, 0px) rotate(312.273deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--3"
+                                         style="left: 6.11605%; top: 26.0376%; transform: translate3d(-50%, 0px, 0px) rotate(298.636deg);"></div>
+                                    <div class="grad grad--4" style="left: 23.8056%; top: 19.77%;">80</div>
+                                    <div class="grad-tick grad-tick--4"
+                                         style="left: 17.257%; top: 12.2125%; transform: translate3d(-50%, 0px, 0px) rotate(319.091deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--4"
+                                         style="left: 27.0887%; top: 5.55823%; transform: translate3d(-50%, 0px, 0px) rotate(332.727deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--4"
+                                         style="left: 32.5268%; top: 3.15251%; transform: translate3d(-50%, 0px, 0px) rotate(339.545deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--4"
+                                         style="left: 21.9746%; top: 8.59254%; transform: translate3d(-50%, 0px, 0px) rotate(325.909deg);"></div>
+                                    <div class="grad grad--5" style="left: 40.5696%; top: 11.1275%;">100</div>
+                                    <div class="grad-tick grad-tick--5"
+                                         style="left: 38.2121%; top: 1.40942%; transform: translate3d(-50%, 0px, 0px) rotate(346.364deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--5"
+                                         style="left: 50%; top: 0%; transform: translate3d(-50%, 0px, 0px) rotate(360deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--5"
+                                         style="left: 55.936%; top: 0.353606%; transform: translate3d(-50%, 0px, 0px) rotate(366.818deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--5"
+                                         style="left: 44.064%; top: 0.353606%; transform: translate3d(-50%, 0px, 0px) rotate(353.182deg);"></div>
+                                    <div class="grad grad--6" style="left: 59.4304%; top: 11.1275%;">120</div>
+                                    <div class="grad-tick grad-tick--6"
+                                         style="left: 61.7879%; top: 1.40942%; transform: translate3d(-50%, 0px, 0px) rotate(373.636deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--6"
+                                         style="left: 72.9113%; top: 5.55823%; transform: translate3d(-50%, 0px, 0px) rotate(387.273deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--6"
+                                         style="left: 78.0254%; top: 8.59254%; transform: translate3d(-50%, 0px, 0px) rotate(394.091deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--6"
+                                         style="left: 67.4732%; top: 3.15251%; transform: translate3d(-50%, 0px, 0px) rotate(380.455deg);"></div>
+                                    <div class="grad grad--7" style="left: 76.1944%; top: 19.77%;">140</div>
+                                    <div class="grad-tick grad-tick--7"
+                                         style="left: 82.743%; top: 12.2125%; transform: translate3d(-50%, 0px, 0px) rotate(400.909deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--7"
+                                         style="left: 90.7288%; top: 20.9972%; transform: translate3d(-50%, 0px, 0px) rotate(414.545deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--7"
+                                         style="left: 93.8839%; top: 26.0376%; transform: translate3d(-50%, 0px, 0px) rotate(421.364deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--7"
+                                         style="left: 86.9976%; top: 16.367%; transform: translate3d(-50%, 0px, 0px) rotate(407.727deg);"></div>
+                                    <div class="grad grad--8" style="left: 87.1347%; top: 35.1335%;">160</div>
+                                    <div class="grad-tick grad-tick--8"
+                                         style="left: 96.4184%; top: 31.4169%; transform: translate3d(-50%, 0px, 0px) rotate(428.182deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--8"
+                                         style="left: 99.4911%; top: 42.8843%; transform: translate3d(-50%, 0px, 0px) rotate(441.818deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--8"
+                                         style="left: 99.9858%; top: 48.8101%; transform: translate3d(-50%, 0px, 0px) rotate(448.636deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--8"
+                                         style="left: 98.2963%; top: 37.059%; transform: translate3d(-50%, 0px, 0px) rotate(435deg);"></div>
+                                    <div class="grad grad--9" style="left: 89.8189%; top: 53.8022%;">180</div>
+                                    <div class="grad-tick grad-tick--9"
+                                         style="left: 99.7736%; top: 54.7528%; transform: translate3d(-50%, 0px, 0px) rotate(455.455deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--9"
+                                         style="left: 97.25%; top: 66.3534%; transform: translate3d(-50%, 0px, 0px) rotate(469.091deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--9"
+                                         style="left: 94.9744%; top: 71.8472%; transform: translate3d(-50%, 0px, 0px) rotate(475.909deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--9"
+                                         style="left: 98.8573%; top: 60.6283%; transform: translate3d(-50%, 0px, 0px) rotate(462.273deg);"></div>
+                                    <div class="grad grad--10" style="left: 83.6501%; top: 71.6256%;">200</div>
+                                    <div class="grad-tick grad-tick--10"
+                                         style="left: 92.0627%; top: 77.032%; transform: translate3d(-50%, 0px, 0px) rotate(482.727deg);"></div>
+                                    <div class="grad-tick grad-tick--half grad-tick--10"
+                                         style="left: 84.504%; top: 86.1867%; transform: translate3d(-50%, 0px, 0px) rotate(496.364deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--10"
+                                         style="left: 79.9639%; top: 90.0271%; transform: translate3d(-50%, 0px, 0px) rotate(503.182deg);"></div>
+                                    <div class="grad-tick grad-tick--quarter grad-tick--10"
+                                         style="left: 88.556%; top: 81.8345%; transform: translate3d(-50%, 0px, 0px) rotate(489.545deg);"></div>
+                                    <div class="grad grad--11" style="left: 70%; top: 84.641%;">220</div>
+                                    <div class="grad-tick grad-tick--11"
+                                         style="left: 75%; top: 93.3013%; transform: translate3d(-50%, 0px, 0px) rotate(510deg);"></div>
+                                    <div id="needleId" class="needle"
+                                         style="transform: translate3d(-50%, 0px, 0px) rotate(30deg);"></div>
+                                    <div class="needle-axle"></div>
+                                    <div class="label label-value">
+                                        <div>{{speed}}</div>
+                                        <span>Km/h</span></div>
+                                </div>
+                                <script src="src/app/modules/vehicle-management/speedometer.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Live Tracking Tab -->
+                </div>
+            </div>
+
+            <div id="add_rule" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Rule</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form (ngSubmit)="addRule()" [formGroup]="addRuleForm">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input type="hidden" id="Id" formControlName="Id">
+                                            <label class="col-form-label">Rule Name
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="addRuleForm.get('Name').invalid && addRuleForm.get('Name').touched"
+                                                   formControlName="Name">
+                                            <div
+                                                *ngIf="addRuleForm.get('Name').invalid && addRuleForm.get('Name').touched">
+                                                <small
+                                                    *ngIf="addRuleForm.get('Name').invalid && addRuleForm.get('Name').touched"
+                                                    class="text-danger"> *Rule Name is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Value
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="addRuleForm.get('Value').invalid && addRuleForm.get('Value').touched"
+                                                   formControlName="Value">
+                                            <div
+                                                *ngIf="addRuleForm.get('Value').invalid && addRuleForm.get('Value').touched">
+                                                <small
+                                                    *ngIf="addRuleForm.get('Value').invalid && addRuleForm.get('Value').touched"
+                                                    class="text-danger"> *Value is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Vehicle Id
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="addRuleForm.get('VehicleId').invalid && addRuleForm.get('VehicleId').touched"
+                                                   formControlName="VehicleId">
+                                            <div
+                                                *ngIf="addRuleForm.get('VehicleId').invalid && addRuleForm.get('VehicleId').touched">
+                                                <small
+                                                    *ngIf="addRuleForm.get('VehicleId').invalid && addRuleForm.get('VehicleId').touched"
+                                                    class="text-danger"> *Vehicle Id is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Add Rule Modal -->
+
+            <div id="edit_rule" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Rule</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form (ngSubmit)="editRule()" [formGroup]="editRuleForm">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input type="hidden" id="EditId" formControlName="EditId">
+                                            <label class="col-form-label">Rule Name
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="editRuleForm.get('Name').invalid && editRuleForm.get('Name').touched"
+                                                   formControlName="Name">
+                                            <div
+                                                *ngIf="editRuleForm.get('Name').invalid && editRuleForm.get('Name').touched">
+                                                <small
+                                                    *ngIf="editRuleForm.get('Name').invalid && editRuleForm.get('Name').touched"
+                                                    class="text-danger"> *Rule Name is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Value
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="editRuleForm.get('Value').invalid && editRuleForm.get('Value').touched"
+                                                   formControlName="Value">
+                                            <div
+                                                *ngIf="editRuleForm.get('Value').invalid && editRuleForm.get('Value').touched">
+                                                <small
+                                                    *ngIf="editRuleForm.get('Value').invalid && editRuleForm.get('Value').touched"
+                                                    class="text-danger"> *Value is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Vehicle Id
+                                                <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text"
+                                                   [class.invalid]="editRuleForm.get('VehicleId').invalid && editRuleForm.get('VehicleId').touched"
+                                                   formControlName="VehicleId">
+                                            <div
+                                                *ngIf="editRuleForm.get('VehicleId').invalid && editRuleForm.get('VehicleId').touched">
+                                                <small
+                                                    *ngIf="editRuleForm.get('VehicleId').invalid && editRuleForm.get('VehicleId').touched"
+                                                    class="text-danger"> *Vehicle Id is required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submit-section">
+                                    <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Edit Rule Modal -->
+
+            <div id="delete_rule" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Delete Rule</h3>
+                                <p>Are you sure want to delete?</p>
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" class="btn btn-primary continue-btn"
+                                           data-bs-dismiss="modal" (click)="deleteRule()">Delete</a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                           class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Delete Rule Modal -->
+        </div>
+    </div>
+</div>

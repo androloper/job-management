@@ -1,0 +1,339 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+        <!-- CONTENT GOES HERE -->
+        <div class="rounded-2xl"></div>
+        <div class="row">
+            <div class="col-sm-6">
+                <fuse-card
+                    class="flex flex-col max-w-200 w-full filter-article filter-interactive"
+                    [flippable]="true"
+                    [face]="'front'"
+                    #flippableCard01="fuseCard">
+                    <ng-container fuseCardFront>
+                        <img
+                            class="object-cover"
+                            src="assets/images/reports/1.jpg"
+                            alt="Card cover image">
+                        <div class="m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Activity
+                                Reports
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                                    Go To Activity Reports List
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container fuseCardBack>
+                        <div class="flex flex-col flex-auto m-4">
+                            <button
+                                class="ml-1.5"
+                                mat-icon-button
+                                (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            </button>
+                            <div class="m-4 mt-3">
+                                <div class="text-2xl font-semibold leading-tight">
+                                    Activity Reports
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/activity-reports/activity-detail-reports">Activity
+                                    Detail Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/activity-reports/engine-hours-detail-reports">Engine
+                                    Hours Detail Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/activity-reports/ignition-open-close-reports">Ignition
+                                    Open/Close Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/activity-reports/travel-reports">Travel
+                                    Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/activity-reports/wait-reports">Wait
+                                    Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </fuse-card>
+            </div>
+            <div class="col-sm-6">
+                <fuse-card
+                    class="flex flex-col max-w-200 w-full filter-article filter-interactive"
+                    style="margin-left: 6px;"
+                    [flippable]="true"
+                    [face]="'front'"
+                    #flippableCard02="fuseCard">
+                    <ng-container fuseCardFront>
+                        <img
+                            class="object-cover"
+                            src="assets/images/reports/1.jpg"
+                            alt="Card cover image">
+                        <div class="m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Violation
+                                Reports
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    (click)="flippableCard02.face = flippableCard02.face === 'front' ? 'back' : 'front'">
+                                    Go To Violation Reports List
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container fuseCardBack>
+                        <div class="flex flex-col flex-auto m-4">
+                            <button
+                                class="ml-1.5"
+                                mat-icon-button
+                                (click)="flippableCard02.face = flippableCard02.face === 'front' ? 'back' : 'front'">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            </button>
+                            <div class="m-4 mt-3">
+                                <div class="text-2xl font-semibold leading-tight">
+                                    Violation Reports
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/violation-reports/activity-violation-reports">Activity
+                                    Violation Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/violation-reports/speed-limit-violation-reports">Speed
+                                    Limit Violation Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/violation-reports/sudden-brake-reports">Sudden
+                                    Brake Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </fuse-card>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <fuse-card
+                    class="flex flex-col max-w-200 w-full filter-article filter-interactive"
+                    [flippable]="true"
+                    [face]="'front'"
+                    #flippableCard03="fuseCard">
+                    <ng-container fuseCardFront>
+                        <img
+                            class="object-cover"
+                            src="assets/images/reports/1.jpg"
+                            alt="Card cover image">
+                        <div class="m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Region
+                                Reports
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    (click)="flippableCard03.face = flippableCard03.face === 'front' ? 'back' : 'front'">
+                                    Go To Region Reports List
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container fuseCardBack>
+                        <div class="flex flex-col flex-auto m-4">
+                            <button
+                                class="ml-1.5"
+                                mat-icon-button
+                                (click)="flippableCard03.face = flippableCard03.face === 'front' ? 'back' : 'front'">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            </button>
+                            <div class="m-4 mt-3">
+                                <div class="text-2xl font-semibold leading-tight">
+                                    Region Reports
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/region-reports/intra-regional-activity-reports">Intra
+                                    Regional Activity Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/region-reports/region-activity-reports">Region
+                                    Activity Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/region-reports/region-activity-summary-reports">Region
+                                    Activity Summary Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </fuse-card>
+            </div>
+            <div class="col-sm-6">
+                <fuse-card
+                    class="flex flex-col max-w-200 w-full filter-article filter-interactive"
+                    style="margin-left: 6px;"
+                    [flippable]="true"
+                    [face]="'front'"
+                    #flippableCard04="fuseCard">
+                    <ng-container fuseCardFront>
+                        <img
+                            class="object-cover"
+                            src="assets/images/reports/1.jpg"
+                            alt="Card cover image">
+                        <div class="m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Sensor
+                                Reports
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    (click)="flippableCard04.face = flippableCard04.face === 'front' ? 'back' : 'front'">
+                                    Go To Sensor Reports List
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container fuseCardBack>
+                        <div class="flex flex-col flex-auto m-4">
+                            <button
+                                class="ml-1.5"
+                                mat-icon-button
+                                (click)="flippableCard04.face = flippableCard04.face === 'front' ? 'back' : 'front'">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            </button>
+                            <div class="m-4 mt-3">
+                                <div class="text-2xl font-semibold leading-tight">
+                                    Sensor Reports
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/sensor-reports/acceleration-sensor-detail-reports">Acceleration
+                                    Sensor Detail Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/sensor-reports/acceleration-sensor-summary-reports">Acceleration
+                                    Sensor Summary Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </fuse-card>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12">
+                <fuse-card
+                    class="flex flex-col w-full filter-article filter-interactive"
+                    [flippable]="true"
+                    [face]="'front'"
+                    #flippableCard05="fuseCard">
+                    <ng-container fuseCardFront>
+                        <img
+                            class="object-cover"
+                            src="assets/images/reports/2.jpg"
+                            alt="Card cover image">
+                        <div class="m-8 mb-4">
+                            <div class="text-2xl font-semibold leading-tight">Summary
+                                Reports
+                            </div>
+                            <div class="mt-3 -mx-3">
+                                <button
+                                    class="px-3"
+                                    mat-button
+                                    [color]="'primary'"
+                                    (click)="flippableCard05.face = flippableCard05.face === 'front' ? 'back' : 'front'">
+                                    Go To Summary Reports List
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container fuseCardBack>
+                        <div class="flex flex-col flex-auto m-4">
+                            <button
+                                class="ml-1.5"
+                                mat-icon-button
+                                (click)="flippableCard05.face = flippableCard05.face === 'front' ? 'back' : 'front'">
+                                <mat-icon
+                                    [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            </button>
+                            <div class="m-4 mt-3">
+                                <div class="text-2xl font-semibold leading-tight">
+                                    Summary Reports
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/total-mileage-reports">Total
+                                    Mileage Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/hourbased-mileage-reports">Hour-based
+                                    Mileage Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/weekly-daybased-mileage-reports">Weekly
+                                    Day-based Mileage Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/daybased-activity-summary-reports">Day-based
+                                    Activity Summary Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/engine-summary-reports">Engine
+                                    Summary Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/vehiclebased-activity-summary-reports">Vehicle-based
+                                    Activity Summary Reports</a>
+                                </div>
+                                <div class="mt-4">
+                                    <span style="margin-right: 2px">♦</span><a
+                                    routerLink="/vehicle-management/reports/summary-reports/violation-summary-reports">Violation
+                                    Summary Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </fuse-card>
+            </div>
+        </div>
+    </div>
+</div>

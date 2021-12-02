@@ -1,0 +1,315 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/vehicle-management/dashboard">Vehicle Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Groups</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/vehicle-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Groups Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_group"><i class="fa fa-plus"></i> Add Group</a>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="rounded-2xl">
+            <ngx-datatable id="ngx-dt6"
+                class="material single-selection whitespace-nowrap"
+                [rows]="groups"
+                [loadingIndicator]="loadingIndicator"
+                [columnMode]="ColumnMode.force"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                rowHeight="60"
+                [externalPaging]="true"
+                [count]="page.totalElements"
+                [offset]="page.pageNumber"
+                [limit]="page.size"
+                (page)="setPage($event)">
+                <ngx-datatable-column name="Id">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Name">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Description">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Id">
+                    <ng-template ngx-datatable-header-template><span class="text-right no-sort">Actions</span></ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+
+                        <span class="text-right align-text-top m-l-60">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-top: 0">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>
+                                    <mat-icon svgIcon="mat_solid:account_circle"></mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#car_list"
+                                          (click)="getByIdWithVehicleListPagination(row.id);">Car List</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_group"
+                                    (click)="setGroup(row.id)">Edit</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_group"
+                                          (click)="tempId = row.id">Delete</span>
+                                </button>
+                            </mat-menu>
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+            <!--Datatable-->
+        </div>
+
+        <div id="car_list" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Car List</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <ngx-datatable id="ngx-dt7"
+                                class="material single-selection whitespace-nowrap"
+                                [rows]="vehicles"
+                                [loadingIndicator]="loadingIndicator"
+                                [columnMode]="ColumnMode.force"
+                                [headerHeight]="50"
+                                [footerHeight]="50"
+                                rowHeight="60"
+                                [externalPaging]="true"
+                                [count]="page2.totalElements"
+                                [offset]="page2.pageNumber"
+                                [limit]="page2.size"
+                                (page)="getByIdWithVehicleListPagination($event)">
+                                <ngx-datatable-column name="Plate">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Make">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Model">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Color">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Driver Name">
+                                    <ng-template let-column="column"
+                                                 ngx-datatable-header-template>{{ column.name }}</ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                            <!--Datatable-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Car List Modal -->
+
+        <div id="add_group" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Group</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addGroup()" [formGroup]="addGroupForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="Id" formControlName="Id">
+                                        <label class="col-form-label">Group Name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addGroupForm.get('Name').invalid && addGroupForm.get('Name').touched"
+                                               formControlName="Name">
+                                        <div
+                                            *ngIf="addGroupForm.get('Name').invalid && addGroupForm.get('Name').touched">
+                                            <small
+                                                *ngIf="addGroupForm.get('Name').invalid && addGroupForm.get('Name').touched"
+                                                class="text-danger"> *Group Name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addGroupForm.get('Description').invalid && addGroupForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="addGroupForm.get('Description').invalid && addGroupForm.get('Description').touched">
+                                            <small
+                                                *ngIf="addGroupForm.get('Description').invalid && addGroupForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Group Modal -->
+
+        <div id="edit_group" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Group</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editGroup()" [formGroup]="editGroupForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="EditId" formControlName="EditId">
+                                        <label class="col-form-label">Group Name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editGroupForm.get('Name').invalid && editGroupForm.get('Name').touched"
+                                               formControlName="Name">
+                                        <div
+                                            *ngIf="editGroupForm.get('Name').invalid && editGroupForm.get('Name').touched">
+                                            <small
+                                                *ngIf="editGroupForm.get('Name').invalid && editGroupForm.get('Name').touched"
+                                                class="text-danger"> *Group Name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Description
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editGroupForm.get('Description').invalid && editGroupForm.get('Description').touched"
+                                               formControlName="Description">
+                                        <div
+                                            *ngIf="editGroupForm.get('Description').invalid && editGroupForm.get('Description').touched">
+                                            <small
+                                                *ngIf="editGroupForm.get('Description').invalid && editGroupForm.get('Description').touched"
+                                                class="text-danger"> *Description is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Group Modal -->
+
+        <div id="delete_group" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Group</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn"
+                                       data-bs-dismiss="modal" (click)="deleteGroup()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                                       class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Group Modal -->
+    </div>
+</div>

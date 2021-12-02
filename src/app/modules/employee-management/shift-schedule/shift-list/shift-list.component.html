@@ -1,0 +1,517 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/dashboard" >Employee Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Shift List</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Shift List Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn m-r-5" data-bs-toggle="modal" data-bs-target="#add_shift">Add Shifts</a>
+            <a href="#" class="btn add-btn m-r-5" data-bs-toggle="modal" data-bs-target="#assign_shift">Assign Shifts</a>
+            <div class="view-icons">
+                <a routerLink="/employee-management/shift-schedule" class="grid-view btn btn-link"><i class="fa fa-calendar"></i></a>
+                <a routerLink="/employee-management/shift-schedule/shift-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+            <ngx-datatable id="ngx-dt70"
+                class="material whitespace-nowrap"
+                [rows]="shifts"
+                [loadingIndicator]="loadingIndicator"
+                [columnMode]="ColumnMode.force"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                rowHeight="60"
+                [externalPaging]="true"
+                [count]="page.totalElements"
+                [offset]="page.pageNumber"
+                [limit]="page.size"
+                (page)="setPage($event)">
+                <ngx-datatable-column name="Title">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Start Date">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value  | date:'mediumTime'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="End Date">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value  | date:'mediumTime'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Break Time">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Is Active">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template class="text-center">
+                        <span class="align-text-top" *ngIf="value"><button class="badge badge-success">Active</button></span>
+                        <span class="align-text-top" *ngIf="!value"><button class="badge badge-danger">Inactive</button></span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Id">
+                    <ng-template ngx-datatable-header-template><span class="text-right no-sort">Actions</span></ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        <span class="text-right align-text-top m-l-80">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_shift" (click)="setShift(value)">Edit</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_shift" (click)="tempId = value">Delete</span>
+                                </button>
+                            </mat-menu>
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+
+        <div id="add_shift" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Shift</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addShift()" [formGroup]="addShiftForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="Id" formControlName="Id">
+                                        <label class="col-form-label">Shift name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addShiftForm.get('Title').invalid && addShiftForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="addShiftForm.get('Title').invalid && addShiftForm.get('Title').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('Title').invalid && addShiftForm.get('Title').touched"
+                                                class="text-danger"> *Shift name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Start date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time"
+                                               [class.invalid]="addShiftForm.get('StartDate').invalid && addShiftForm.get('StartDate').touched"
+                                               formControlName="StartDate">
+                                        <div
+                                            *ngIf="addShiftForm.get('StartDate').invalid && addShiftForm.get('StartDate').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('StartDate').invalid && addShiftForm.get('StartDate').touched"
+                                                class="text-danger"> *Start date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">End date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time"
+                                               [class.invalid]="addShiftForm.get('EndDate').invalid && addShiftForm.get('EndDate').touched"
+                                               formControlName="EndDate">
+                                        <div
+                                            *ngIf="addShiftForm.get('EndDate').invalid && addShiftForm.get('EndDate').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('EndDate').invalid && addShiftForm.get('EndDate').touched"
+                                                class="text-danger"> *End date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br><br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Break time
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="01:00:00"
+                                               [class.invalid]="addShiftForm.get('BreakTime').invalid && addShiftForm.get('BreakTime').touched"
+                                               formControlName="BreakTime">
+                                        <div
+                                            *ngIf="addShiftForm.get('BreakTime').invalid && addShiftForm.get('BreakTime').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('BreakTime').invalid && addShiftForm.get('BreakTime').touched"
+                                                class="text-danger"> *Break time is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Created by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="Your name"
+                                               [class.invalid]="addShiftForm.get('CreateBy').invalid && addShiftForm.get('CreateBy').touched"
+                                               formControlName="CreateBy">
+                                        <div
+                                            *ngIf="addShiftForm.get('CreateBy').invalid && addShiftForm.get('CreateBy').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('CreateBy').invalid && addShiftForm.get('CreateBy').touched"
+                                                class="text-danger"> *Created by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-focus select-focus">
+                                        <label class="col-form-label">Is active <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="text-align: left; height:44px"                                                [class.invalid]="addShiftForm.get('IsActive').invalid && addShiftForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true" selected>Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addShiftForm.get('IsActive').invalid && addShiftForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="addShiftForm.get('IsActive').invalid && addShiftForm.get('IsActive').touched"
+                                                class="text-danger"> *Is active required</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Shift Modal -->
+
+        <div id="edit_shift" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Shift</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editShift()" [formGroup]="editShiftForm">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="hidden" id="EditId" formControlName="EditId">
+                                        <label class="col-form-label">Shift name
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editShiftForm.get('Title').invalid && editShiftForm.get('Title').touched"
+                                               formControlName="Title">
+                                        <div
+                                            *ngIf="editShiftForm.get('Title').invalid && editShiftForm.get('Title').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('Title').invalid && editShiftForm.get('Title').touched"
+                                                class="text-danger"> *Shift name is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Start date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time"
+                                               [class.invalid]="editShiftForm.get('StartDate').invalid && editShiftForm.get('StartDate').touched"
+                                               formControlName="StartDate">
+                                        <div
+                                            *ngIf="editShiftForm.get('StartDate').invalid && editShiftForm.get('StartDate').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('StartDate').invalid && editShiftForm.get('StartDate').touched"
+                                                class="text-danger"> *Start date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">End date
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time"
+                                               [class.invalid]="editShiftForm.get('EndDate').invalid && editShiftForm.get('EndDate').touched"
+                                               formControlName="EndDate">
+                                        <div
+                                            *ngIf="editShiftForm.get('EndDate').invalid && editShiftForm.get('EndDate').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('EndDate').invalid && editShiftForm.get('EndDate').touched"
+                                                class="text-danger"> *End date is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br><br><br>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Break time
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="01:00:00"
+                                               [class.invalid]="editShiftForm.get('BreakTime').invalid && editShiftForm.get('BreakTime').touched"
+                                               formControlName="BreakTime">
+                                        <div
+                                            *ngIf="editShiftForm.get('BreakTime').invalid && editShiftForm.get('BreakTime').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('BreakTime').invalid && editShiftForm.get('BreakTime').touched"
+                                                class="text-danger"> *Break time is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Updated by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" placeholder="01:00:00"
+                                               [class.invalid]="editShiftForm.get('UpdateBy').invalid && editShiftForm.get('UpdateBy').touched"
+                                               formControlName="UpdateBy">
+                                        <div
+                                            *ngIf="editShiftForm.get('UpdateBy').invalid && editShiftForm.get('UpdateBy').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('UpdateBy').invalid && editShiftForm.get('UpdateBy').touched"
+                                                class="text-danger"> *Updated by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-focus select-focus">
+                                        <label class="col-form-label">Is active <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="text-align: left; height:44px"
+                                                [class.invalid]="editShiftForm.get('IsActive').invalid && editShiftForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true">Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editShiftForm.get('IsActive').invalid && editShiftForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="editShiftForm.get('IsActive').invalid && editShiftForm.get('IsActive').touched"
+                                                class="text-danger"> *Is active required</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Shift Modal -->
+
+        <div id="assign_shift" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Schedule</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Department <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Department</option>
+                                            <option value="1">Finance</option>
+                                            <option value="2">Finance and Management</option>
+                                            <option value="3">Hr & Finance</option>
+                                            <option value="4">ITech</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Employee Name <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Employee </option>
+                                            <option value="1">Richard Miles </option>
+                                            <option value="2">John Smith</option>
+                                            <option value="3">Mike Litorus </option>
+                                            <option value="4">Wilmer Deluna</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Date</label>
+                                        <input class="form-control" type="date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Shifts <span class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating" style="height: 44px; width:100%; border-radius: 4px; text-align: left">
+                                            <option value="">Select Shift</option>
+                                            <option value="1">10'o clock Shift</option>
+                                            <option value="2">10:30 shift</option>
+                                            <option value="3">Daily Shift </option>
+                                            <option value="4">New Shift</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max Start Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Min End Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">End Time   <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Max End Time <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="time">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Break Time  <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Accept Extra Hours </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">
+                                            <label class="custom-control-label" for="customSwitch1"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Publish </label>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch2" checked="">
+                                            <label class="custom-control-label" for="customSwitch2"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal" >Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Schedule Modal -->
+
+        <div id="delete_shift" class="modal custom-modal fade"  role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Shift</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn" data-bs-dismiss="modal" (click)="deleteShift()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Shift Modal -->
+    </div>
+
+</div>

@@ -1,0 +1,95 @@
+<div style="width:100% !important;">
+    <div class="row">
+            <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Acceleration Sensor Detail Reports (ASDR)
+            </h3>
+    </div>
+    <br>
+    <ngx-datatable id="ngx-dt19"
+        class="material single-selection whitespace-nowrap"
+        style="width: 100% !important;"
+        [rows]="reports"
+        [loadingIndicator]="loadingIndicator"
+        [columnMode]="ColumnMode.force"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        rowHeight="60"
+        [externalPaging]="true"
+        [count]="page.totalElements"
+        [offset]="page.pageNumber"
+        [limit]="page.size"
+        (page)="setPage($event)">
+        <ngx-datatable-column name="Creation Date">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value | date:'medium'}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Coordinates">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Speed">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Sudden Acceleration">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Sudden Brake">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Sudden Maneuver To The Right">
+            <ng-template ngx-datatable-header-template>Right Maneuver</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Sudden Maneuver To The Left">
+            <ng-template ngx-datatable-header-template>Left Maneuver</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Bump">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Accident">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                <span class="align-text-top" *ngIf="value"><button
+                    class="badge badge-success btn btn-sm">Yes</button></span>
+                <span class="align-text-top" *ngIf="!value"><button
+                    class="badge badge-danger btn btn-sm">No</button></span>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

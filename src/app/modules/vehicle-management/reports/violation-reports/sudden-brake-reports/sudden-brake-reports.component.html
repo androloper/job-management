@@ -1,0 +1,47 @@
+<div style="width:100% !important;">
+    <div class="row">
+            <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Sudden Brake Reports (SBR)
+            </h3>
+    </div>
+    <br>
+    <ngx-datatable id="ngx-dt23"
+        class="material single-selection whitespace-nowrap"
+        style="width: 100% !important;"
+        [rows]="reports"
+        [loadingIndicator]="loadingIndicator"
+        [columnMode]="ColumnMode.force"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        rowHeight="60"
+        [externalPaging]="true"
+        [count]="page.totalElements"
+        [offset]="page.pageNumber"
+        [limit]="page.size"
+        (page)="setPage($event)">
+        <ngx-datatable-column name="Plate">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Creation Date">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value | date:'medium'}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Address">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Brake Strength">
+            <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

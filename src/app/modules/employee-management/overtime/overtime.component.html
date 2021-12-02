@@ -1,0 +1,328 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/dashboard" >Employee Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Overtime</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Overtime Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_overtime"><i class="fa fa-plus"></i> Add Overtime</a>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+            <!-- Overtime Statistics -->
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="stats-info">
+                        <h6>Overtime Employee</h6>
+                        <h4>12 <span>this month</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="stats-info">
+                        <h6>Overtime Hours</h6>
+                        <h4>118 <span>this month</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="stats-info">
+                        <h6>Pending Request</h6>
+                        <h4>23</h4>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="stats-info">
+                        <h6>Rejected</h6>
+                        <h4>5</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- /Overtime Statistics -->
+
+            <ngx-datatable id="ngx-dt68"
+                class="material whitespace-nowrap"
+                [rows]="overtimes"
+                [loadingIndicator]="loadingIndicator"
+                [columnMode]="ColumnMode.force"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                rowHeight="60"
+                [externalPaging]="true"
+                [count]="page.totalElements"
+                [offset]="page.pageNumber"
+                [limit]="page.size"
+                (page)="setPage($event)">
+                <ngx-datatable-column name="Over Time Date">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value | date:'short'}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Over Time Hours">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Description">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="User Id">
+                    <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                    <ng-template let-value="value" ngx-datatable-cell-template class="text-center">{{value}}</ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Id">
+                    <ng-template ngx-datatable-header-template><span class="text-right no-sort">Actions</span></ng-template>
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <span class="text-right align-text-top m-l-80">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_overtime" (click)="setOvertime(value); updateId=row.userId; ">Edit</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_overtime" (click)="tempId = value">Delete</span>
+                                </button>
+                            </mat-menu>
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+
+
+        </div>
+
+        <div id="add_overtime" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Overtime</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form  (ngSubmit)="addOvertime()" [formGroup]="addOvertimeForm">
+                            <input type="hidden" id="Id" formControlName="Id">
+                            <input type="hidden" id="User" formControlName="User">
+                            <div class="form-group form-focus select-focus">
+                                <label class="col-form-label">Select Employee <span
+                                    class="text-danger">*</span></label>
+                                <br>
+                                <select class="btn btn-white btn-sm btn-rounded select floating"
+                                        style="text-align: left; height: 44px; border-radius: 4px"
+                                        [class.invalid]="addOvertimeForm.get('UserId').invalid && addOvertimeForm.get('UserId').touched"
+                                        formControlName="UserId">
+                                    <option ngValue="Someone1">Someone1</option>
+                                    <option ngValue="Someone2">Someone2</option>
+                                </select>
+                                <div
+                                    *ngIf="addOvertimeForm.get('UserId').invalid && addOvertimeForm.get('UserId').touched">
+                                    <small
+                                        *ngIf="addOvertimeForm.get('UserId').invalid && addOvertimeForm.get('UserId').touched"
+                                        class="text-danger"> *Select Employee is required</small>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group">
+                                <label class="col-form-label">Overtime Date
+                                    <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date"
+                                       [class.invalid]="addOvertimeForm.get('OvertimeDate').invalid && addOvertimeForm.get('OvertimeDate').touched"
+                                       formControlName="OvertimeDate">
+                                <div
+                                    *ngIf="addOvertimeForm.get('OvertimeDate').invalid && addOvertimeForm.get('OvertimeDate').touched">
+                                    <small
+                                        *ngIf="addOvertimeForm.get('OvertimeDate').invalid && addOvertimeForm.get('OvertimeDate').touched"
+                                        class="text-danger"> *Overtime Date is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Overtime Hours
+                                    <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                       [class.invalid]="addOvertimeForm.get('OvertimeHours').invalid && addOvertimeForm.get('OvertimeHours').touched"
+                                       formControlName="OvertimeHours">
+                                <div
+                                    *ngIf="addOvertimeForm.get('OvertimeHours').invalid && addOvertimeForm.get('OvertimeHours').touched">
+                                    <small
+                                        *ngIf="addOvertimeForm.get('OvertimeHours').invalid && addOvertimeForm.get('OvertimeHours').touched"
+                                        class="text-danger"> *Overtime Hours is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Description
+                                    <span class="text-danger">*</span></label>
+                                <textarea rows="4" class="form-control" mat-autosize
+                                       [class.invalid]="addOvertimeForm.get('Description').invalid && addOvertimeForm.get('Description').touched"
+                                       formControlName="Description"></textarea>
+                                <div
+                                    *ngIf="addOvertimeForm.get('Description').invalid && addOvertimeForm.get('Description').touched">
+                                    <small
+                                        *ngIf="addOvertimeForm.get('Description').invalid && addOvertimeForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Overtime Modal -->
+
+        <div id="edit_overtime" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Overtime</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form  (ngSubmit)="editOvertime()" [formGroup]="editOvertimeForm">
+                            <input type="hidden" id="EditId" formControlName="EditId">
+                            <input type="hidden" id="EditUser" formControlName="EditUser">
+                            <div class="form-group form-focus select-focus">
+                                <label class="col-form-label">Select Employee <span
+                                    class="text-danger">*</span></label>
+                                <br>
+                                <select class="btn btn-white btn-sm btn-rounded select floating"
+                                        style="text-align: left; height: 44px; border-radius: 4px"
+                                        [class.invalid]="editOvertimeForm.get('EditUserId').invalid && editOvertimeForm.get('EditUserId').touched"
+                                        formControlName="EditUserId">
+                                    <option>Someone1</option>
+                                    <option>Someone2</option>
+                                </select>
+                                <div
+                                    *ngIf="editOvertimeForm.get('EditUserId').invalid && editOvertimeForm.get('EditUserId').touched">
+                                    <small
+                                        *ngIf="editOvertimeForm.get('EditUserId').invalid && editOvertimeForm.get('EditUserId').touched"
+                                        class="text-danger"> *Select Employee is required</small>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group">
+                                <label class="col-form-label">Overtime Date
+                                    <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date"
+                                       [class.invalid]="editOvertimeForm.get('OvertimeDate').invalid && editOvertimeForm.get('OvertimeDate').touched"
+                                       formControlName="OvertimeDate">
+                                <div
+                                    *ngIf="editOvertimeForm.get('OvertimeDate').invalid && editOvertimeForm.get('OvertimeDate').touched">
+                                    <small
+                                        *ngIf="editOvertimeForm.get('OvertimeDate').invalid && editOvertimeForm.get('OvertimeDate').touched"
+                                        class="text-danger"> *Overtime Date is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Overtime Hours
+                                    <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text"
+                                       [class.invalid]="editOvertimeForm.get('OvertimeHours').invalid && editOvertimeForm.get('OvertimeHours').touched"
+                                       formControlName="OvertimeHours">
+                                <div
+                                    *ngIf="editOvertimeForm.get('OvertimeHours').invalid && editOvertimeForm.get('OvertimeHours').touched">
+                                    <small
+                                        *ngIf="editOvertimeForm.get('OvertimeHours').invalid && editOvertimeForm.get('OvertimeHours').touched"
+                                        class="text-danger"> *Overtime Hours is required</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Description
+                                    <span class="text-danger">*</span></label>
+                                <textarea rows="4" class="form-control" mat-autosize
+                                          [class.invalid]="editOvertimeForm.get('Description').invalid && editOvertimeForm.get('Description').touched"
+                                          formControlName="Description"></textarea>
+                                <div
+                                    *ngIf="editOvertimeForm.get('Description').invalid && editOvertimeForm.get('Description').touched">
+                                    <small
+                                        *ngIf="editOvertimeForm.get('Description').invalid && editOvertimeForm.get('Description').touched"
+                                        class="text-danger"> *Description is required</small>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Overtime Modal -->
+
+        <!-- Delete Overtime Modal -->
+        <div id="delete_overtime" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Overtime</h3>
+                            <p>Are you sure want to Cancel this?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn"
+                                       data-bs-dismiss="modal" (click)="deleteOvertime()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Overtime Modal -->
+    </div>
+
+</div>

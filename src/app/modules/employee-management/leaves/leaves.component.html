@@ -1,0 +1,676 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" routerLink="/employee-management/dashboard" >Employee Management</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">Leave</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'/employee-management/dashboard'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back to Dashboard</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Leave Component
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <div class="col-auto float-right ml-auto">
+                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_leave"><i class="fa fa-plus"></i> Add Leave</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div
+        class="flex-auto p-6 sm:p-10 overflow-y-auto"
+        cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+            <!-- Leave Statistics -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Today Presents</h6>
+                        <h4>12 / 60</h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Planned Leave</h6>
+                        <h4>8 <span>Today</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Unplanned Leave</h6>
+                        <h4>0 <span>Today</span></h4>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-info">
+                        <h6>Pending Requests</h6>
+                        <h4>12</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- /Leave Statistics -->
+
+            <!-- Search Filter -->
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Employee Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating" style="width: 100%; height: 100%">
+                            <option> -- Select -- </option>
+                            <option>Casual Leave</option>
+                            <option>Medical Leave</option>
+                            <option>Loss of Pay</option>
+                        </select>
+                        <label class="focus-label">Leave Type</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus" >
+                        <select class="select floating" style="width: 100%; height: 100%">
+                            <option> -- Select -- </option>
+                            <option> Pending </option>
+                            <option> Approved </option>
+                            <option> Rejected </option>
+                        </select>
+                        <label class="focus-label">Leave Status</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <input class="form-control floating" type="date">
+                        <label class="focus-label">From</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <input class="form-control floating" type="date">
+                        <label class="focus-label">To</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <a href="#" class="btn btn-success btn-block"> Search </a>
+                </div>
+            </div>
+            <!-- /Search Filter -->
+            <br>
+            <div class="h-400 min-h-400 max-h-400 rounded-2xl">
+                <ngx-datatable id="ngx-dt67"
+                    class="material whitespace-nowrap"
+                    [rows]="leaves"
+                    [loadingIndicator]="loadingIndicator"
+                    [columnMode]="ColumnMode.force"
+                    [headerHeight]="50"
+                    [footerHeight]="50"
+                    rowHeight="60"
+                    [externalPaging]="true"
+                    [count]="page.totalElements"
+                    [offset]="page.pageNumber"
+                    [limit]="page.size"
+                    (page)="setPage($event)">
+                    <ngx-datatable-column name="User">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                            <a routerLink="/employee-management/all-employees/employee-profile/{{this.row['userId']}}">
+                                {{value.fullName}}</a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Leaves Type">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Date From">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value | date:'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Date To">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value  | date:'MM/dd/yyyy'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Reason">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Status">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Is Active">
+                        <ng-template let-column="column" ngx-datatable-header-template>{{ column.name }}</ng-template>
+                        <ng-template let-value="value" ngx-datatable-cell-template class="text-center">
+                    <span class="align-text-top" *ngIf="value"><button
+                        class="badge badge-success">Active</button></span>
+                            <span class="align-text-top" *ngIf="!value"><button
+                                class="badge badge-danger">Inactive</button></span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Id">
+                        <ng-template ngx-datatable-header-template><span class="text-right no-sort">Actions</span>
+                        </ng-template>
+                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <span class="text-right align-text-top m-l-60">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item>
+                                    <mat-icon>edit</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#edit_leave"
+                                          (click)="setLeave(value)">Edit</span>
+                                </button>
+                                <button mat-menu-item>
+                                    <mat-icon>delete</mat-icon>
+                                    <span href="#" data-bs-toggle="modal" data-bs-target="#delete_leave"
+                                          (click)="tempId = value">Delete</span>
+                                </button>
+                            </mat-menu>
+                        </span>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+
+        <div id="add_leave" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Leave</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="addLeave()" [formGroup]="addLeaveForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="hidden" id="AddId" formControlName="AddId">
+                                        <input type="hidden" id="AddUserId" formControlName="AddUserId">
+                                        <label class="col-form-label">Select employee <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addLeaveForm.get('AddUser').invalid && addLeaveForm.get('AddUser').touched"
+                                                formControlName="AddUser">
+                                            <option>Denver Jones</option>
+                                            <option>Denver Jones</option>
+                                            <option>Denver Jones</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addLeaveForm.get('AddUser').invalid && addLeaveForm.get('AddUser').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('AddUser').invalid && addLeaveForm.get('AddUser').touched"
+                                                class="text-danger"> *Select employee is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addLeaveForm.get('IsActive').invalid && addLeaveForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true">Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addLeaveForm.get('IsActive').invalid && addLeaveForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('IsActive').invalid && addLeaveForm.get('IsActive').touched"
+                                                class="text-danger"> *Is active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Date from
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addLeaveForm.get('DateFrom').invalid && addLeaveForm.get('DateFrom').touched"
+                                               formControlName="DateFrom">
+                                        <div
+                                            *ngIf="addLeaveForm.get('DateFrom').invalid && addLeaveForm.get('DateFrom').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('DateFrom').invalid && addLeaveForm.get('DateFrom').touched"
+                                                class="text-danger"> *Date from is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Date to
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="addLeaveForm.get('DateTo').invalid && addLeaveForm.get('DateTo').touched"
+                                               formControlName="DateTo">
+                                        <div
+                                            *ngIf="addLeaveForm.get('DateTo').invalid && addLeaveForm.get('DateTo').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('DateTo').invalid && addLeaveForm.get('DateTo').touched"
+                                                class="text-danger"> *Date to is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Created by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addLeaveForm.get('CreateBy').invalid && addLeaveForm.get('CreateBy').touched"
+                                               formControlName="CreateBy">
+                                        <div
+                                            *ngIf="addLeaveForm.get('CreateBy').invalid && addLeaveForm.get('CreateBy').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('CreateBy').invalid && addLeaveForm.get('CreateBy').touched"
+                                                class="text-danger"> *Created by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Approved by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="addLeaveForm.get('ApprovedBy').invalid && addLeaveForm.get('ApprovedBy').touched"
+                                               formControlName="ApprovedBy">
+                                        <div
+                                            *ngIf="addLeaveForm.get('ApprovedBy').invalid && addLeaveForm.get('ApprovedBy').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('ApprovedBy').invalid && addLeaveForm.get('ApprovedBy').touched"
+                                                class="text-danger"> *Approved by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <br><br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Type <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addLeaveForm.get('Type').invalid && addLeaveForm.get('Type').touched"
+                                                formControlName="Type">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addLeaveForm.get('Type').invalid && addLeaveForm.get('Type').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('Type').invalid && addLeaveForm.get('Type').touched"
+                                                class="text-danger"> *Type is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Status <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addLeaveForm.get('Status').invalid && addLeaveForm.get('Status').touched"
+                                                formControlName="Status">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addLeaveForm.get('Status').invalid && addLeaveForm.get('Status').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('Status').invalid && addLeaveForm.get('Status').touched"
+                                                class="text-danger"> *Status is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Leave Type Id <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="addLeaveForm.get('AddLeavesTypeId').invalid && addLeaveForm.get('AddLeavesTypeId').touched"
+                                                formControlName="AddLeavesTypeId">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addLeaveForm.get('AddLeavesTypeId').invalid && addLeaveForm.get('AddLeavesTypeId').touched">
+                                            <small
+                                                *ngIf="addLeaveForm.get('AddLeavesTypeId').invalid && addLeaveForm.get('AddLeavesTypeId').touched"
+                                                class="text-danger"> *Leave Type Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Leave reason
+                                        <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text"
+                                           [class.invalid]="addLeaveForm.get('Reason').invalid && addLeaveForm.get('Reason').touched"
+                                           formControlName="Reason">
+                                    <div
+                                        *ngIf="addLeaveForm.get('Reason').invalid && addLeaveForm.get('Reason').touched">
+                                        <small
+                                            *ngIf="addLeaveForm.get('Reason').invalid && addLeaveForm.get('Reason').touched"
+                                            class="text-danger"> *Leave reason is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Add Leave Modal -->
+
+        <div id="edit_leave" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Leave</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form (ngSubmit)="editLeave()" [formGroup]="editLeaveForm">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="hidden" id="EditId" formControlName="EditId">
+                                        <input type="hidden" id="EditUserId" formControlName="EditUserId">
+                                        <label class="col-form-label">Select employee <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editLeaveForm.get('EditUser').invalid && editLeaveForm.get('EditUser').touched"
+                                                formControlName="EditUser">
+                                            <option>Denver Jones</option>
+                                            <option>Denver Jones</option>
+                                            <option>Denver Jones</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editLeaveForm.get('EditUser').invalid && editLeaveForm.get('EditUser').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('EditUser').invalid && editLeaveForm.get('EditUser').touched"
+                                                class="text-danger"> *Select employee is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Is active <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editLeaveForm.get('IsActive').invalid && editLeaveForm.get('IsActive').touched"
+                                                formControlName="IsActive">
+                                            <option [ngValue]="true">Active</option>
+                                            <option [ngValue]="false">Inactive</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editLeaveForm.get('IsActive').invalid && editLeaveForm.get('IsActive').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('IsActive').invalid && editLeaveForm.get('IsActive').touched"
+                                                class="text-danger"> *Is active is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Date from
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editLeaveForm.get('DateFrom').invalid && editLeaveForm.get('DateFrom').touched"
+                                               formControlName="DateFrom">
+                                        <div
+                                            *ngIf="editLeaveForm.get('DateFrom').invalid && editLeaveForm.get('DateFrom').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('DateFrom').invalid && editLeaveForm.get('DateFrom').touched"
+                                                class="text-danger"> *Date from is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Date to
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date"
+                                               [class.invalid]="editLeaveForm.get('DateTo').invalid && editLeaveForm.get('DateTo').touched"
+                                               formControlName="DateTo">
+                                        <div
+                                            *ngIf="editLeaveForm.get('DateTo').invalid && editLeaveForm.get('DateTo').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('DateTo').invalid && editLeaveForm.get('DateTo').touched"
+                                                class="text-danger"> *Date to is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Created by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editLeaveForm.get('CreateBy').invalid && editLeaveForm.get('CreateBy').touched"
+                                               formControlName="CreateBy">
+                                        <div
+                                            *ngIf="editLeaveForm.get('CreateBy').invalid && editLeaveForm.get('CreateBy').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('CreateBy').invalid && editLeaveForm.get('CreateBy').touched"
+                                                class="text-danger"> *Created by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group form-focus focused">
+                                        <label class="col-form-label">Approved by
+                                            <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                               [class.invalid]="editLeaveForm.get('ApprovedBy').invalid && editLeaveForm.get('ApprovedBy').touched"
+                                               formControlName="ApprovedBy">
+                                        <div
+                                            *ngIf="editLeaveForm.get('ApprovedBy').invalid && editLeaveForm.get('ApprovedBy').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('ApprovedBy').invalid && editLeaveForm.get('ApprovedBy').touched"
+                                                class="text-danger"> *Approved by is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Type <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editLeaveForm.get('Type').invalid && editLeaveForm.get('Type').touched"
+                                                formControlName="Type">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editLeaveForm.get('Type').invalid && editLeaveForm.get('Type').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('Type').invalid && editLeaveForm.get('Type').touched"
+                                                class="text-danger"> *Type is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Status <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editLeaveForm.get('Status').invalid && editLeaveForm.get('Status').touched"
+                                                formControlName="Status">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editLeaveForm.get('Status').invalid && editLeaveForm.get('Status').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('Status').invalid && editLeaveForm.get('Status').touched"
+                                                class="text-danger"> *Status is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <label class="col-form-label">Leave Type Id <span
+                                            class="text-danger">*</span></label>
+                                        <br>
+                                        <select class="btn btn-white btn-sm btn-rounded select floating"
+                                                style="text-align: left; height: 44px; border-radius: 4px"
+                                                [class.invalid]="editLeaveForm.get('EditLeavesTypeId').invalid && editLeaveForm.get('EditLeavesTypeId').touched"
+                                                formControlName="EditLeavesTypeId">
+                                            <option [ngValue]=0>0</option>
+                                            <option [ngValue]=1>1</option>
+                                            <option [ngValue]=2>2</option>
+                                            <option [ngValue]=3>3</option>
+                                        </select>
+                                        <div
+                                            *ngIf="editLeaveForm.get('EditLeavesTypeId').invalid && editLeaveForm.get('EditLeavesTypeId').touched">
+                                            <small
+                                                *ngIf="editLeaveForm.get('EditLeavesTypeId').invalid && editLeaveForm.get('EditLeavesTypeId').touched"
+                                                class="text-danger"> *Leave Type Id is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Leave reason
+                                        <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text"
+                                           [class.invalid]="editLeaveForm.get('Reason').invalid && editLeaveForm.get('Reason').touched"
+                                           formControlName="Reason">
+                                    <div
+                                        *ngIf="editLeaveForm.get('Reason').invalid && editLeaveForm.get('Reason').touched">
+                                        <small
+                                            *ngIf="editLeaveForm.get('Reason').invalid && editLeaveForm.get('Reason').touched"
+                                            class="text-danger"> *Leave reason is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit Leave Modal -->
+
+        <div class="modal custom-modal fade" id="delete_leave" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Leave</h3>
+                            <p>Are you sure want to Cancel this leave?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" class="btn btn-primary continue-btn"
+                                       data-bs-dismiss="modal" (click)="deleteLeave()">Delete</a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Leave Modal -->
+    </div>
+
+</div>
